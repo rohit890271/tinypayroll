@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PayrollSaaS - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"secondary-fixed": "#d5e3fd", "inverse-primary": "#565e74", "surface-bright": "#363a3b", "surface-container-highest": "#323537", "on-primary-fixed-variant": "#3f465c", "error-container": "#93000a", "secondary-container": "#3c4a5e", "on-tertiary-fixed": "#271901", "on-secondary": "#233144", "surface-container": "#1d2022", "inverse-on-surface": "#2d3133", "on-tertiary-fixed-variant": "#574425", secondary: "#b9c7e0", "on-primary": "#283044", "secondary-fixed-dim": "#b9c7e0", "on-tertiary": "#3e2d11", "surface-container-lowest": "#0b0f10", "surface-container-low": "#191c1e", "surface-container-high": "#272a2c", "tertiary-container": "#231500", "outline-variant": "#45464d", "primary-container": "#0f172a", "primary-fixed-dim": "#bec6e0", "on-secondary-container": "#abb9d2", surface: "#101415", "on-error-container": "#ffdad6", background: "#101415", "on-secondary-fixed-variant": "#3a485c", tertiary: "#dec29a", "on-tertiary-container": "#957d5a", "on-primary-fixed": "#131b2e", outline: "#909097", error: "#ffb4ab", "tertiary-fixed": "#fcdeb5", "surface-variant": "#323537", "on-surface-variant": "#c6c6cd", primary: "#bec6e0", "on-error": "#690005", "surface-tint": "#bec6e0", "primary-fixed": "#dae2fd", "on-background": "#e0e3e5", "on-primary-container": "#798098", "tertiary-fixed-dim": "#dec29a", "on-surface": "#e0e3e5", "on-secondary-fixed": "#0d1c2f", "surface-dim": "#101415", "inverse-surface": "#e0e3e5", "success-action": "#10b981"}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}, spacing: {"2xl": "64px", xs: "4px", gutter: "24px", md: "16px", base: "4px", "container-max": "1280px", lg: "24px", xl: "40px", sm: "8px"}, fontFamily: {"body-sm": ["Inter"], "data-mono": ["Inter"], "body-md": ["Inter"], "headline-md": ["Manrope"], "headline-lg": ["Manrope"], "label-md": ["Inter"], "headline-lg-mobile": ["Manrope"], "body-lg": ["Inter"], display: ["Manrope"], headline: ["Manrope"], body: ["Inter"], label: ["Inter"]}, fontSize: {}}}};</script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="text-on-surface">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-surface group/design-root overflow-x-hidden" style='font-family: Manrope, "Noto Sans", sans-serif;'>
+<div class="layout-container flex h-full grow flex-col">
+<div class="px-4 md:px-10 lg:px-40 flex flex-1 justify-center py-5">
+<div class="layout-content-container flex flex-col max-w-[container-max] flex-1">
+<!-- Shared Header -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-outline-variant px-4 md:px-10 py-3 bg-surface-container-lowest rounded-t-xl">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_6_535)">
+<path clip-rule="evenodd" d="M47.2426 24L24 47.2426L0.757355 24L24 0.757355L47.2426 24ZM12.2426 21H35.7574L24 9.24264L12.2426 21Z" fill="currentColor" fill-rule="evenodd"></path>
+</g>
+<defs>
+<clippath id="clip0_6_535"><rect fill="white" height="48" width="48"></rect></clippath>
+</defs>
+</svg>
+</div>
+<h2 class="text-primary text-lg font-bold leading-tight tracking-[-0.015em]">PayrollSaaS</h2>
+</div>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-on-primary text-sm font-bold leading-normal tracking-[0.015em]">
+<span class="truncate">Logout</span>
+</button>
+</header>
+<!-- Main Content Area -->
+<main class="flex flex-col gap-6 pt-8">
+<!-- Header & CTA -->
+<div class="flex flex-wrap items-center justify-between gap-4 px-4">
+<h1 class="text-primary text-4xl font-black leading-tight tracking-[-0.033em] min-w-72">Payroll Overview</h1>
+<button class="flex min-w-[160px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-12 px-6 bg-success-action text-white text-base font-bold leading-normal tracking-[0.015em] shadow-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined" data-icon="play_arrow">play_arrow</span>
+<span class="truncate">Run New Payroll</span>
+</button>
+</div>
+<!-- Stats Row -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-4">
+<div class="flex flex-col gap-2 rounded-xl p-6 border border-outline-variant bg-surface-container-lowest shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<p class="text-sm font-medium leading-normal uppercase tracking-wider">Total Employees</p>
+</div>
+<p class="text-primary tracking-tight text-3xl font-bold leading-tight">8</p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 border border-outline-variant bg-surface-container-lowest shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<p class="text-sm font-medium leading-normal uppercase tracking-wider">Last Payroll Date</p>
+</div>
+<p class="text-primary tracking-tight text-3xl font-bold leading-tight">Oct 15, 2023</p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 border border-outline-variant bg-surface-container-lowest shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<p class="text-sm font-medium leading-normal uppercase tracking-wider">Total Paid (YTD)</p>
+</div>
+<p class="text-primary tracking-tight text-3xl font-bold leading-tight">$42,500.00</p>
+</div>
+</div>
+<!-- Payroll History Section -->
+<div class="flex flex-col gap-4 p-4">
+<h2 class="text-primary text-[22px] font-bold leading-tight tracking-[-0.015em]">Payroll History</h2>
+<div class="overflow-hidden rounded-xl border border-outline-variant bg-surface-container-lowest shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="px-6 py-4 text-on-surface-variant text-sm font-semibold uppercase tracking-wider">Pay Date</th>
+<th class="px-6 py-4 text-on-surface-variant text-sm font-semibold uppercase tracking-wider">Period</th>
+<th class="px-6 py-4 text-right text-on-surface-variant text-sm font-semibold uppercase tracking-wider">Amount</th>
+<th class="px-6 py-4 text-center text-on-surface-variant text-sm font-semibold uppercase tracking-wider">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-secondary-fixed/20 transition-colors">
+<td class="px-6 py-5 text-on-surface text-sm font-medium">Oct 15, 2023</td>
+<td class="px-6 py-5 text-on-surface-variant text-sm">Oct 01 - Oct 15</td>
+<td class="px-6 py-5 text-right text-primary font-bold text-sm">$8,400.00</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-800">
+                                                        Paid
+                                                    </span>
+</td>
+</tr>
+<tr class="hover:bg-secondary-fixed/20 transition-colors">
+<td class="px-6 py-5 text-on-surface text-sm font-medium">Sep 30, 2023</td>
+<td class="px-6 py-5 text-on-surface-variant text-sm">Sep 16 - Sep 30</td>
+<td class="px-6 py-5 text-right text-primary font-bold text-sm">$8,250.00</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-800">
+                                                        Paid
+                                                    </span>
+</td>
+</tr>
+<tr class="hover:bg-secondary-fixed/20 transition-colors">
+<td class="px-6 py-5 text-on-surface text-sm font-medium">Sep 15, 2023</td>
+<td class="px-6 py-5 text-on-surface-variant text-sm">Sep 01 - Sep 15</td>
+<td class="px-6 py-5 text-right text-primary font-bold text-sm">$8,400.00</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">
+                                                        Processing
+                                                    </span>
+</td>
+</tr>
+<tr class="hover:bg-secondary-fixed/20 transition-colors">
+<td class="px-6 py-5 text-on-surface text-sm font-medium">Aug 31, 2023</td>
+<td class="px-6 py-5 text-on-surface-variant text-sm">Aug 16 - Aug 31</td>
+<td class="px-6 py-5 text-right text-primary font-bold text-sm">$8,100.00</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-800">
+                                                        Paid
+                                                    </span>
+</td>
+</tr>
+<tr class="hover:bg-secondary-fixed/20 transition-colors">
+<td class="px-6 py-5 text-on-surface text-sm font-medium">Aug 15, 2023</td>
+<td class="px-6 py-5 text-on-surface-variant text-sm">Aug 01 - Aug 15</td>
+<td class="px-6 py-5 text-right text-primary font-bold text-sm">$8,400.00</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-800">
+                                                        Paid
+                                                    </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 bg-surface-container-low border-t border-outline-variant flex justify-end">
+<button class="text-secondary text-sm font-bold hover:underline">View All History</button>
+</div>
+</div>
+</div>
+<!-- Contextual Illustration Area -->
+<div class="px-4 py-8">
+<div class="relative w-full h-64 overflow-hidden rounded-2xl bg-slate-900 border border-outline">
+<img alt="Financial Planning Dashboard Illustration" class="w-full h-full object-cover opacity-60" data-alt="A clean and professional digital overhead shot of a modern workspace with a high-end laptop displaying financial growth charts and payroll data. The lighting is bright and natural, reflecting a pristine office environment with minimalist white furniture. The scene uses a sophisticated color palette of deep blacks, soft grays, and subtle green accents, creating an atmosphere of reliability, precision, and financial clarity for small business management." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUz6QCLe2nhwnF1oVfhoeVao1Gnrs7-TDadbZvF9FnXQgRbG9Sc2IFT1NfS9rJ3J3ggM1zSf3SxVwUvRZsjdkFRQ4b_YDPalzP8gCKLg57am3-8nUY75C2VEvLyd4nASGfoHA_IS4kQd3JLtQWtDlfOVqs39MVB_aSJfjT4dHsWg2PY1I0axzs3WBZ3mVj855T5ZWo5nDMM7BW8xi1hxXi5cN5M490MtPT_2RvEudFaqWLJ3PhSDzjlQBblcKlP5QZLjhHZaI"/>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center p-8">
+<h3 class="text-white text-2xl font-bold mb-2">Automate Your Tax Filings</h3>
+<p class="text-slate-200 max-w-lg">Scale your business while we handle the complex compliance. PayrollSaaS ensures you never miss a filing deadline.</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="mt-auto py-10 px-4 text-center text-on-surface-variant text-sm border-t border-outline-variant">
+<p>© 2023 PayrollSaaS Inc. Designed for precision and reliability.</p>
+</footer>
+</div>
+</div>
+</div>
+</div>
+</body></html>
