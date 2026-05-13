@@ -181,3 +181,10 @@ This rounding softens the "corporate" feel, making the software feel more approa
 
 ### Cards
 - Standard containers for dashboard widgets. Deep Navy background (`#1e293b`), 1px Slate-700 border, 8px corner radius. Include a 16px header area with a bottom border to separate the title from the content.
+
+## Screens
+The following screens have been fetched from the Stitch project and are available in `stitch-assets`:
+1. Payroll Dashboard
+2. Run Payroll
+3. Onboarding - Business Details
+4. Onboarding - Add Employee
