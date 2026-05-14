@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { calculateEmployeePayroll } from "../lib/payroll/calculatePayroll.js";
-import { formatCurrency } from "../lib/payroll/formatCurrency.js";
+import { calculateEmployeePayroll, type PayrollResultUS, type PayrollResultIN } from "../lib/payroll/calculatePayroll";
+import { formatCurrency } from "../lib/payroll/formatCurrency";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 const round2 = (n: number) => Math.round(n * 100) / 100;
@@ -9,52 +9,52 @@ const PAY_PERIODS_IN = 12;
 
 // ─── US FIXTURES ─────────────────────────────────────────────────────────────
 const usHourlyEmployee = {
-  pay_type: "hourly",
+  pay_type: "hourly" as const,
   hourly_rate: 15,
   annual_salary: null,
-  tax_filing_status: "single",
+  tax_filing_status: "single" as const,
   country_code: "US",
 };
 
 const usSalaryEmployeeMarried = {
-  pay_type: "salary",
+  pay_type: "salary" as const,
   hourly_rate: null,
   annual_salary: 60000,
-  tax_filing_status: "married",
+  tax_filing_status: "married" as const,
   country_code: "US",
 };
 
 const usSalaryEmployeeSingle = {
-  pay_type: "salary",
+  pay_type: "salary" as const,
   hourly_rate: null,
   annual_salary: 60000,
-  tax_filing_status: "single",
+  tax_filing_status: "single" as const,
   country_code: "US",
 };
 
 // ─── INDIA FIXTURES ───────────────────────────────────────────────────────────
 // Monthly pay → annual = monthly × 12
 const inLowSalaryEmployee = {
-  pay_type: "salary",
+  pay_type: "salary" as const,
   hourly_rate: null,
   annual_salary: 12000 * 12,  // ₹12,000/month
-  tax_filing_status: "single",
+  tax_filing_status: "single" as const,
   country_code: "IN",
 };
 
 const inMidSalaryEmployee = {
-  pay_type: "salary",
+  pay_type: "salary" as const,
   hourly_rate: null,
   annual_salary: 25000 * 12,  // ₹25,000/month
-  tax_filing_status: "single",
+  tax_filing_status: "single" as const,
   country_code: "IN",
 };
 
 const inHighSalaryEmployee = {
-  pay_type: "salary",
+  pay_type: "salary" as const,
   hourly_rate: null,
   annual_salary: 150000 * 12, // ₹1,50,000/month
-  tax_filing_status: "single",
+  tax_filing_status: "single" as const,
   country_code: "IN",
 };
 
@@ -63,7 +63,7 @@ const inHighSalaryEmployee = {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 describe("US — Hourly $15/hr, 40hrs, single filer", () => {
-  const result = calculateEmployeePayroll(usHourlyEmployee, 40, 0, 0, 0);
+  const result = calculateEmployeePayroll(usHourlyEmployee, 40, 0, 0, 0) as PayrollResultUS;
   // gross = 40 × 15 = $600
   const expectedGross = 600;
   // annualise = 600 × 26 = $15,600. Tax: $11,925 × 10% + (15,600-11,925) × 12%
@@ -108,7 +108,7 @@ describe("US — Hourly $15/hr, 40hrs, single filer", () => {
 });
 
 describe("US — Salary $60,000/yr, married, 1 unpaid day", () => {
-  const result = calculateEmployeePayroll(usSalaryEmployeeMarried, 0, 0, 1, 0);
+  const result = calculateEmployeePayroll(usSalaryEmployeeMarried, 0, 0, 1, 0) as PayrollResultUS;
   // base = 60000/26 = 2307.69..., deduct 60000/260 = 230.77
   const annual = 60000;
   const base = annual / PAY_PERIODS_US;
@@ -145,7 +145,7 @@ describe("US — $500 bonus on $5,000 salary base", () => {
     ...usSalaryEmployeeSingle,
     annual_salary: 130000,
   };
-  const result = calculateEmployeePayroll(highSalaryEmployee, 0, 0, 0, 500);
+  const result = calculateEmployeePayroll(highSalaryEmployee, 0, 0, 0, 500) as PayrollResultUS;
   const expectedBase = round2(130000 / PAY_PERIODS_US);
   const expectedGross = round2(expectedBase + 500);
 
@@ -170,7 +170,7 @@ describe("US — $500 bonus on $5,000 salary base", () => {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 describe("India — ₹12,000/month (ESI + PF mandatory)", () => {
-  const result = calculateEmployeePayroll(inLowSalaryEmployee, 0, 0, 0, 0, { currentMonth: 3 });
+  const result = calculateEmployeePayroll(inLowSalaryEmployee, 0, 0, 0, 0, { currentMonth: 3 }) as PayrollResultIN;
   const expectedGross = 12000;
 
   it("returns country: IN and currency: INR", () => {
@@ -216,7 +216,7 @@ describe("India — ₹12,000/month (ESI + PF mandatory)", () => {
 });
 
 describe("India — ₹25,000/month (no ESI, PF applies)", () => {
-  const result = calculateEmployeePayroll(inMidSalaryEmployee, 0, 0, 0, 0, { currentMonth: 5 });
+  const result = calculateEmployeePayroll(inMidSalaryEmployee, 0, 0, 0, 0, { currentMonth: 5 }) as PayrollResultIN;
   const expectedGross = 25000;
 
   it("computes gross = ₹25,000", () => {
@@ -239,7 +239,7 @@ describe("India — ₹25,000/month (no ESI, PF applies)", () => {
 });
 
 describe("India — ₹1,50,000/month (high TDS)", () => {
-  const result = calculateEmployeePayroll(inHighSalaryEmployee, 0, 0, 0, 0, { currentMonth: 6 });
+  const result = calculateEmployeePayroll(inHighSalaryEmployee, 0, 0, 0, 0, { currentMonth: 6 }) as PayrollResultIN;
   const expectedGross = 150000;
 
   it("computes gross = ₹1,50,000", () => {
@@ -264,7 +264,7 @@ describe("India — ₹1,50,000/month (high TDS)", () => {
 });
 
 describe("India — ₹10,000 bonus on ₹25,000 base", () => {
-  const result = calculateEmployeePayroll(inMidSalaryEmployee, 0, 0, 0, 10000, { currentMonth: 7 });
+  const result = calculateEmployeePayroll(inMidSalaryEmployee, 0, 0, 0, 10000, { currentMonth: 7 }) as PayrollResultIN;
   const expectedGross = 35000;
 
   it("adds bonus AFTER base salary → gross = ₹35,000", () => {
@@ -284,7 +284,7 @@ describe("India — ₹10,000 bonus on ₹25,000 base", () => {
 });
 
 describe("India — February month → PT = ₹300", () => {
-  const result = calculateEmployeePayroll(inMidSalaryEmployee, 0, 0, 0, 0, { currentMonth: 2 });
+  const result = calculateEmployeePayroll(inMidSalaryEmployee, 0, 0, 0, 0, { currentMonth: 2 }) as PayrollResultIN;
 
   it("professional_tax = ₹300 in February", () => {
     expect(result.professional_tax).toBe(300);
@@ -297,7 +297,7 @@ describe("India — Professional Tax edge cases", () => {
       ...inLowSalaryEmployee,
       annual_salary: 6000 * 12, // ₹6,000/month
     };
-    const result = calculateEmployeePayroll(poorEmployee, 0, 0, 0, 0, { currentMonth: 5 });
+    const result = calculateEmployeePayroll(poorEmployee, 0, 0, 0, 0, { currentMonth: 5 }) as PayrollResultIN;
     expect(result.professional_tax).toBe(0);
   });
 
@@ -306,7 +306,7 @@ describe("India — Professional Tax edge cases", () => {
       ...inLowSalaryEmployee,
       annual_salary: 9000 * 12, // ₹9,000/month
     };
-    const result = calculateEmployeePayroll(midEmployee, 0, 0, 0, 0, { currentMonth: 5 });
+    const result = calculateEmployeePayroll(midEmployee, 0, 0, 0, 0, { currentMonth: 5 }) as PayrollResultIN;
     expect(result.professional_tax).toBe(175);
   });
 });
@@ -317,19 +317,19 @@ describe("India — Professional Tax edge cases", () => {
 
 describe("Cross-country — same base employee, IN vs US", () => {
   const baseEmployee = {
-    pay_type: "salary",
+    pay_type: "salary" as const,
     hourly_rate: null,
     annual_salary: 60000,
-    tax_filing_status: "single",
+    tax_filing_status: "single" as const,
   };
 
   const usResult = calculateEmployeePayroll(
     { ...baseEmployee, country_code: "US" }, 0, 0, 0, 0
-  );
+  ) as PayrollResultUS;
 
   const inResult = calculateEmployeePayroll(
     { ...baseEmployee, country_code: "IN" }, 0, 0, 0, 0, { currentMonth: 5 }
-  );
+  ) as PayrollResultIN;
 
   it("returns different country codes", () => {
     expect(usResult.country).toBe("US");
@@ -397,31 +397,29 @@ describe("formatCurrency", () => {
 
 describe("Edge cases", () => {
   it("throws on unknown pay_type for US", () => {
-    const bad = { pay_type: "contract", country_code: "US", tax_filing_status: "single" };
+    const bad = { pay_type: "contract" as const, country_code: "US", tax_filing_status: "single" as const } as unknown as import("../lib/payroll/types").Employee;
     expect(() => calculateEmployeePayroll(bad, 40)).toThrow(/unknown pay_type/i);
   });
 
   it("throws on unknown pay_type for IN", () => {
-    const bad = { pay_type: "gig", country_code: "IN" };
+    const bad = { pay_type: "gig" as const, country_code: "IN" } as unknown as import("../lib/payroll/types").Employee;
     expect(() => calculateEmployeePayroll(bad, 40)).toThrow(/unknown pay_type/i);
   });
 
   it("defaults to US when country_code is undefined", () => {
-    const emp = { pay_type: "hourly", hourly_rate: 20, tax_filing_status: "single" };
-    const result = calculateEmployeePayroll(emp, 40);
+    const emp = { pay_type: "hourly" as const, hourly_rate: 20, tax_filing_status: "single" as const };
+    const result = calculateEmployeePayroll(emp, 40) as PayrollResultUS;
     expect(result.country).toBe("US");
   });
 
   it("US SS is capped at annual wage base of $168,600", () => {
-    // At $168,600/26 per period ≈ $6,484.62 → SS at cap = 6484.62 × 6.2%
-    // Above this wage level, SS should not exceed cap per period
     const highEarner = {
-      pay_type: "salary",
+      pay_type: "salary" as const,
       annual_salary: 500000,
-      tax_filing_status: "single",
+      tax_filing_status: "single" as const,
       country_code: "US",
     };
-    const result = calculateEmployeePayroll(highEarner);
+    const result = calculateEmployeePayroll(highEarner) as PayrollResultUS;
     const maxSSPerPeriod = round2((168600 / 26) * 0.062);
     expect(result.social_security).toBeLessThanOrEqual(maxSSPerPeriod);
   });
