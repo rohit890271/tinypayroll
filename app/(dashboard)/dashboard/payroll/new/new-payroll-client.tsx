@@ -332,6 +332,7 @@ export function NewPayrollClient({
           employees={employees}
           calcs={calcs}
           cc={cc}
+          business={business}
           periodStart={periodStart}
           periodEnd={periodEnd}
           totalCost={totalCost}
