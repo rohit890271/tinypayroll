@@ -60,3 +60,72 @@ export async function getEmployeesForBusiness(businessId: string): Promise<Emplo
 
   return (data ?? []) as Employee[];
 }
+
+// ── Payroll types ─────────────────────────────────────────────────────────────
+export type PayrollRun = {
+  id: string;
+  business_id: string;
+  pay_period_start: string;
+  pay_period_end: string;
+  run_date: string;
+  status: string;
+  country_code: string;
+  currency_code: string;
+  created_at?: string;
+};
+
+export type PayrollLineItem = {
+  id: string;
+  payroll_run_id: string;
+  employee_id: string;
+  pay_type: "hourly" | "salary";
+  hours_worked: number | null;
+  overtime_hours: number | null;
+  unpaid_leave_days: number;
+  bonus_amount: number;
+  gross_pay: number;
+  total_deductions: number;
+  net_pay: number;
+  employer_total_cost: number;
+  // joined employee name
+  employee?: { name: string; email: string };
+};
+
+export async function getPayrollRuns(businessId: string): Promise<PayrollRun[]> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("payroll_runs")
+    .select("*")
+    .eq("business_id", businessId)
+    .order("run_date", { ascending: false })
+    .limit(10);
+
+  if (error) throw new Error(error.message);
+  return (data ?? []) as PayrollRun[];
+}
+
+export async function getPayrollRunDetail(
+  runId: string,
+  businessId: string
+): Promise<{ run: PayrollRun; lineItems: PayrollLineItem[] } | null> {
+  const supabase = createClient();
+
+  const { data: run, error: runErr } = await supabase
+    .from("payroll_runs")
+    .select("*")
+    .eq("id", runId)
+    .eq("business_id", businessId)
+    .single();
+
+  if (runErr || !run) return null;
+
+  const { data: lineItems, error: lineErr } = await supabase
+    .from("payroll_line_items")
+    .select("*, employee:employees(name, email)")
+    .eq("payroll_run_id", runId)
+    .order("employee_id");
+
+  if (lineErr) throw new Error(lineErr.message);
+
+  return { run: run as PayrollRun, lineItems: (lineItems ?? []) as PayrollLineItem[] };
+}
