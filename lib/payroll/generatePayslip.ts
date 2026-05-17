@@ -79,7 +79,7 @@ export async function generatePayslipPDF(data: PayslipData): Promise<Blob> {
   const doc = new JsPDF({ unit: "mm", format: "a4" });
   // jspdf-autotable augments the doc prototype at runtime
   // eslint-disable-next-line
-  const tbl = (doc as Record<string, unknown>).autoTable as Function;
+  const tbl = (doc as unknown as Record<string, unknown>).autoTable as Function;
   const boundTbl = tbl.bind(doc);
 
   const { business, employee, calc, periodStart, periodEnd } = data;
@@ -170,7 +170,7 @@ export async function generatePayslipPDF(data: PayslipData): Promise<Blob> {
     theme: "grid",
   });
 
-  y = ((doc as Record<string, unknown>).lastAutoTable as { finalY: number }).finalY + 6;
+  y = ((doc as unknown as Record<string, unknown>).lastAutoTable as { finalY: number }).finalY + 6;
 
   // ── DEDUCTIONS TABLE ───────────────────────────────────────────────────────
   const deductionRows: [string, string][] = [];
@@ -203,7 +203,7 @@ export async function generatePayslipPDF(data: PayslipData): Promise<Blob> {
     theme: "grid",
   });
 
-  y = ((doc as Record<string, unknown>).lastAutoTable as { finalY: number }).finalY + 6;
+  y = ((doc as unknown as Record<string, unknown>).lastAutoTable as { finalY: number }).finalY + 6;
 
   // ── NET PAY BOX ────────────────────────────────────────────────────────────
   doc.setFillColor(...C.payroll);
@@ -244,7 +244,7 @@ export async function generatePayslipPDF(data: PayslipData): Promise<Blob> {
     theme: "grid",
   });
 
-  y = ((doc as Record<string, unknown>).lastAutoTable as { finalY: number }).finalY + 8;
+  y = ((doc as unknown as Record<string, unknown>).lastAutoTable as { finalY: number }).finalY + 8;
 
   // ── FOOTER ─────────────────────────────────────────────────────────────────
   doc.setDrawColor(...C.moss);

@@ -1,11 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Select } from "@/components/ui/select";
 import { getCurrentUserBusiness } from "@/lib/data/business";
-import { US_STATES } from "@/lib/onboarding/us-states";
-import { createBusinessAction } from "./actions";
+import { detectUserCountry } from "@/lib/detectCountry";
+import { BusinessForm } from "./business-form";
 
 type BusinessOnboardingPageProps = {
   searchParams?: {
@@ -24,6 +21,9 @@ export default async function BusinessOnboardingPage({ searchParams }: BusinessO
     redirect("/onboarding/employees");
   }
 
+  // Detect country code server-side (default to "US")
+  const countryCode = await detectUserCountry();
+
   return (
     <main className="mx-auto grid min-h-screen max-w-5xl place-items-center px-6 py-10">
       <div className="grid w-full gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
@@ -38,23 +38,14 @@ export default async function BusinessOnboardingPage({ searchParams }: BusinessO
           </p>
         </section>
 
-        <form action={createBusinessAction} className="rounded-[2rem] border border-ink/10 bg-white/85 p-6 shadow-soft backdrop-blur sm:p-8">
-          {searchParams?.error ? <p className="mb-5 rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">{searchParams.error}</p> : null}
-          <div className="grid gap-5">
-            <Input label="Business name" name="name" placeholder="Oak Street Bakery" required />
-            <Select label="US state" name="state" defaultValue="" required>
-              <option value="" disabled>
-                Choose a state
-              </option>
-              {US_STATES.map((state) => (
-                <option key={state.code} value={state.code}>
-                  {state.name}
-                </option>
-              ))}
-            </Select>
-            <Button type="submit">Save business</Button>
-          </div>
-        </form>
+        <div className="w-full">
+          {searchParams?.error ? (
+            <p className="mb-5 rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">
+              {searchParams.error}
+            </p>
+          ) : null}
+          <BusinessForm initialCountryCode={countryCode} />
+        </div>
       </div>
     </main>
   );
