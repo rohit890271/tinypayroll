@@ -78,8 +78,9 @@ export async function generatePayslipPDF(data: PayslipData): Promise<Blob> {
   const JsPDF = await getJsPDF();
   const doc = new JsPDF({ unit: "mm", format: "a4" });
   // jspdf-autotable augments the doc prototype at runtime
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const tbl = (doc as any).autoTable.bind(doc);
+  // eslint-disable-next-line
+  const tbl = (doc as Record<string, unknown>).autoTable as Function;
+  const boundTbl = tbl.bind(doc);
 
   const { business, employee, calc, periodStart, periodEnd } = data;
   const cc = business.country_code ?? "US";
@@ -156,7 +157,7 @@ export async function generatePayslipPDF(data: PayslipData): Promise<Blob> {
     earningsRows.push(["Bonus", cur(bonusAmt)]);
   }
 
-  tbl({
+  boundTbl({
     startY: y,
     head: [["Earnings", "Amount"]],
     body: earningsRows,
@@ -169,7 +170,7 @@ export async function generatePayslipPDF(data: PayslipData): Promise<Blob> {
     theme: "grid",
   });
 
-  y = (doc as any).lastAutoTable.finalY + 6;
+  y = ((doc as Record<string, unknown>).lastAutoTable as { finalY: number }).finalY + 6;
 
   // ── DEDUCTIONS TABLE ───────────────────────────────────────────────────────
   const deductionRows: [string, string][] = [];
@@ -189,7 +190,7 @@ export async function generatePayslipPDF(data: PayslipData): Promise<Blob> {
     }
   }
 
-  tbl({
+  boundTbl({
     startY: y,
     head: [["Deductions", "Amount"]],
     body: deductionRows,
@@ -202,7 +203,7 @@ export async function generatePayslipPDF(data: PayslipData): Promise<Blob> {
     theme: "grid",
   });
 
-  y = (doc as any).lastAutoTable.finalY + 6;
+  y = ((doc as Record<string, unknown>).lastAutoTable as { finalY: number }).finalY + 6;
 
   // ── NET PAY BOX ────────────────────────────────────────────────────────────
   doc.setFillColor(...C.payroll);
@@ -230,7 +231,7 @@ export async function generatePayslipPDF(data: PayslipData): Promise<Blob> {
     }
   }
 
-  tbl({
+  boundTbl({
     startY: y,
     head: [["Employer Cost Breakdown (For Business Owner)", "Amount"]],
     body: employerRows,
@@ -243,7 +244,7 @@ export async function generatePayslipPDF(data: PayslipData): Promise<Blob> {
     theme: "grid",
   });
 
-  y = (doc as any).lastAutoTable.finalY + 8;
+  y = ((doc as Record<string, unknown>).lastAutoTable as { finalY: number }).finalY + 8;
 
   // ── FOOTER ─────────────────────────────────────────────────────────────────
   doc.setDrawColor(...C.moss);
