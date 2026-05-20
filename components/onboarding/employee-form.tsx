@@ -1,15 +1,34 @@
-"use client";
-
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
+import { useToast } from "@/components/ui/toast";
 
 export function EmployeeForm({ action }: { action: (formData: FormData) => Promise<void> }) {
   const [payType, setPayType] = useState<"hourly" | "salary">("hourly");
+  const [isPending, startTransition] = useTransition();
+  const { error } = useToast();
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    startTransition(async () => {
+      try {
+        await action(formData);
+        form.reset();
+      } catch (err: any) {
+        if (err.message && err.message.includes("NEXT_REDIRECT")) {
+          throw err;
+        }
+        error(err?.message || "Something went wrong. Try again.");
+      }
+    });
+  };
 
   return (
-    <form action={action} className="grid gap-5 rounded-[2rem] border border-ink/10 bg-white/85 p-6 shadow-soft">
+    <form onSubmit={handleSubmit} className="grid gap-5 rounded-[2rem] border border-ink/10 bg-white/85 p-6 shadow-soft">
       <div className="grid gap-4 sm:grid-cols-2">
         <Input label="Employee name" name="name" required />
         <Input label="Email" name="email" type="email" required />
@@ -45,7 +64,7 @@ export function EmployeeForm({ action }: { action: (formData: FormData) => Promi
         <option value="married">Married</option>
       </Select>
 
-      <Button type="submit">Add Another</Button>
+      <Button type="submit" loading={isPending}>Add Another</Button>
     </form>
   );
 }

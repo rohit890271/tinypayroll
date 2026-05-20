@@ -1,6 +1,17 @@
 import Link from "next/link";
+import { Metadata } from "next";
 import { getCurrentUserBusiness } from "@/lib/data/business";
 import { CheckoutButton } from "./checkout-button";
+
+export const metadata: Metadata = {
+  title: "Pricing | TinyPayroll - Simple Payroll for Small Teams",
+  description: "Get TinyPayroll Pro for just $20/month (or ₹1,699/month in India) with a 7-day free trial. Unlimited payroll runs, automatic tax calculations, and PDF payslips.",
+  openGraph: {
+    title: "Pricing | TinyPayroll - Simple Payroll for Small Teams",
+    description: "Get TinyPayroll Pro for just $20/month (or ₹1,699/month in India) with a 7-day free trial.",
+    images: ["/og-image.png"]
+  }
+};
 
 export default async function PricingPage() {
   const { user, business } = await getCurrentUserBusiness();
@@ -44,8 +55,8 @@ export default async function PricingPage() {
           </p>
         </div>
 
-        <div className="mt-12 w-full max-w-md rounded-[2.5rem] border border-ink/10 bg-white/80 p-5 shadow-soft backdrop-blur">
-          <div className="rounded-[2rem] bg-ink p-6 text-white flex flex-col justify-between min-h-[500px]">
+        <div className="mt-12 w-full max-w-md rounded-[2rem] sm:rounded-[2.5rem] border border-ink/10 bg-white/80 p-3 sm:p-5 shadow-soft backdrop-blur">
+          <div className="rounded-[1.5rem] sm:rounded-[2rem] bg-ink p-5 sm:p-6 text-white flex flex-col justify-between min-h-[500px]">
             <div>
               <div className="flex items-center justify-between border-b border-white/10 pb-5">
                 <div>

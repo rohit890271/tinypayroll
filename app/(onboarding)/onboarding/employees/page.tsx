@@ -40,7 +40,6 @@ export default async function EmployeesOnboardingPage({ searchParams }: Employee
       </section>
 
       <section className="grid gap-6">
-        {searchParams?.error ? <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">{searchParams.error}</p> : null}
         <EmployeeForm action={addEmployeeAction} />
 
         <div className="rounded-[2rem] border border-ink/10 bg-white/80 p-6 shadow-soft">

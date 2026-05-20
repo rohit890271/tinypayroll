@@ -1,20 +1,30 @@
 import type { ButtonHTMLAttributes } from "react";
 
 const variantClasses = {
-  primary: "bg-payroll text-white shadow-soft hover:bg-[#0b5d44]",
-  secondary: "border border-ink/15 bg-white text-ink hover:bg-cream",
-  ghost: "text-moss hover:bg-oat/70"
+  primary: "bg-payroll text-white shadow-soft hover:bg-[#0b5d44] disabled:bg-payroll/50",
+  secondary: "border border-ink/15 bg-white text-ink hover:bg-cream disabled:bg-white/50",
+  ghost: "text-moss hover:bg-oat/70 disabled:opacity-50"
 };
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: keyof typeof variantClasses;
+  loading?: boolean;
 };
 
-export function Button({ className = "", variant = "primary", ...props }: ButtonProps) {
+export function Button({ className = "", variant = "primary", loading, children, disabled, ...props }: ButtonProps) {
   return (
     <button
-      className={`inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition ${variantClasses[variant]} ${className}`}
+      disabled={disabled || loading}
+      className={`inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-semibold transition disabled:cursor-not-allowed ${variantClasses[variant]} ${className}`}
       {...props}
-    />
+    >
+      {loading && (
+        <svg className="w-4 h-4 animate-spin text-current" fill="none" viewBox="0 0 24 24">
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+        </svg>
+      )}
+      {children}
+    </button>
   );
 }

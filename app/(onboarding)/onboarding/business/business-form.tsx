@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { US_STATES } from "@/lib/onboarding/us-states";
 import { IN_STATES } from "@/lib/onboarding/in-states";
 import { createBusinessAction } from "./actions";
+import { useToast } from "@/components/ui/toast";
 
 type BusinessFormProps = {
   initialCountryCode: string;
@@ -18,6 +19,8 @@ export function BusinessForm({ initialCountryCode }: BusinessFormProps) {
   const [stateValue, setStateValue] = useState("");
   const [referralCode, setReferralCode] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
+  const [isPending, startTransition] = useTransition();
+  const { error } = useToast();
 
   useEffect(() => {
     // If server said US but client-side timezone is clearly Indian Standard Time
@@ -56,13 +59,27 @@ export function BusinessForm({ initialCountryCode }: BusinessFormProps) {
     setStateValue("");
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+
     // Clear referral code from localStorage after form submission
     try {
       localStorage.removeItem("referral_code");
     } catch {
       // ignore
     }
+
+    startTransition(async () => {
+      try {
+        await createBusinessAction(formData);
+      } catch (err: any) {
+        if (err.message && err.message.includes("NEXT_REDIRECT")) {
+          throw err;
+        }
+        error(err?.message || "Something went wrong. Try again.");
+      }
+    });
   };
 
   return (
@@ -75,7 +92,7 @@ export function BusinessForm({ initialCountryCode }: BusinessFormProps) {
         </span>
       </div>
 
-      <form ref={formRef} action={createBusinessAction} onSubmit={handleSubmit} className="rounded-[2rem] border border-ink/10 bg-white/85 p-6 shadow-soft backdrop-blur sm:p-8">
+      <form ref={formRef} onSubmit={handleSubmit} className="rounded-[2rem] border border-ink/10 bg-white/85 p-6 shadow-soft backdrop-blur sm:p-8">
         {/* Hidden fields to submit detected/chosen country and currency */}
         <input type="hidden" name="country_code" value={countryCode} />
         <input type="hidden" name="currency_code" value={currency} />
@@ -127,7 +144,7 @@ export function BusinessForm({ initialCountryCode }: BusinessFormProps) {
             </div>
           )}
 
-          <Button type="submit">Save business</Button>
+          <Button type="submit" loading={isPending}>Save business</Button>
         </div>
       </form>
     </div>

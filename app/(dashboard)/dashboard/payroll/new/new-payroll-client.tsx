@@ -12,6 +12,8 @@ import { PreviewModal } from "./preview-modal";
 // Types are defined in ./types.ts — re-export for any legacy imports
 export type { PayrollCalc, RowInputs, EnrichedEmployee } from "./types";
 
+import { useToast } from "@/components/ui/toast";
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function getCurrentPeriod(countryCode: string): { start: string; end: string } {
   const now = new Date();
@@ -86,8 +88,8 @@ export function NewPayrollClient({
   const [showPreview, setShowPreview] = useState(false);
   const [previewSeen, setPreviewSeen] = useState(false);
   const [processing, setProcessing] = useState(false);
-  const [toast, setToast] = useState<{ type: "success" | "error"; msg: string } | null>(null);
   const [tooltipEmpId, setTooltipEmpId] = useState<string | null>(null);
+  const { success, error } = useToast();
 
   // Live calcs
   const calcs: Record<string, PayrollCalc | null> = Object.fromEntries(
@@ -108,11 +110,6 @@ export function NewPayrollClient({
     },
     []
   );
-
-  const showToast = (type: "success" | "error", msg: string) => {
-    setToast({ type, msg });
-    setTimeout(() => setToast(null), 4000);
-  };
 
   async function handleConfirm() {
     setProcessing(true);
@@ -161,11 +158,11 @@ export function NewPayrollClient({
 
       if (lineErr) throw lineErr;
 
-      showToast("success", "Payroll processed successfully!");
+      success("Payroll processed successfully!");
       startTransition(() => router.push("/dashboard"));
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Save failed. Please try again.";
-      showToast("error", msg);
+      error(msg);
     } finally {
       setProcessing(false);
     }
@@ -175,25 +172,6 @@ export function NewPayrollClient({
 
   return (
     <section className="flex flex-col gap-0 min-h-full">
-      {/* ── Toast ── */}
-      {toast && (
-        <div
-          role="alert"
-          className={`fixed top-6 right-6 z-50 flex items-center gap-3 rounded-xl px-5 py-4 text-sm font-medium shadow-lg transition-all
-            ${toast.type === "success"
-              ? "bg-emerald-600 text-white"
-              : "bg-red-600 text-white"
-            }`}
-        >
-          {toast.type === "success" ? (
-            <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-          ) : (
-            <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-          )}
-          {toast.msg}
-        </div>
-      )}
-
       {/* ── Header ── */}
       <div className="mb-8">
         <p className="text-xs font-semibold uppercase tracking-widest text-payroll mb-2">Payroll</p>

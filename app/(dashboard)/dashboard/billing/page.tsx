@@ -1,7 +1,6 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUserBusiness } from "@/lib/data/business";
-import { manageSubscriptionAction } from "@/app/billing/manage/actions";
+import { ManageButton } from "./manage-button";
 
 export default async function BillingPage() {
   const { user, business } = await getCurrentUserBusiness();
@@ -15,7 +14,11 @@ export default async function BillingPage() {
   }
 
   const status = business.subscription_status || "inactive";
-  const dodoCustomerId = business.dodo_customer_id;
+
+  // Redirect to pricing page if there is no active subscription
+  if (status !== "active" && status !== "trialing") {
+    redirect("/pricing");
+  }
 
   // Format status badge
   const getStatusBadge = (status: string) => {
@@ -80,23 +83,7 @@ export default async function BillingPage() {
         </div>
 
         <div className="mt-8 pt-6 border-t border-ink/10 flex justify-end">
-          {dodoCustomerId ? (
-            <form action={manageSubscriptionAction}>
-              <button
-                type="submit"
-                className="rounded-full bg-payroll px-6 py-3 text-sm font-semibold text-white shadow-soft hover:bg-payroll/90 transition"
-              >
-                Manage Subscription
-                  </button>
-                </form>
-              ) : (
-            <Link
-              href="/pricing"
-              className="rounded-full bg-payroll px-6 py-3 text-sm font-semibold text-white shadow-soft hover:bg-payroll/90 transition"
-            >
-              Start Subscription
-            </Link>
-          )}
+          <ManageButton />
         </div>
       </div>
     </section>
