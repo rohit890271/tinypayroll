@@ -34,5 +34,20 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(redirectUrl);
   }
 
+  if (user && request.nextUrl.pathname.startsWith("/dashboard")) {
+    const { data: business } = await supabase
+      .from("businesses")
+      .select("subscription_status")
+      .eq("owner_user_id", user.id)
+      .limit(1)
+      .maybeSingle();
+
+    if (business && business.subscription_status !== "active" && business.subscription_status !== "trialing") {
+      const redirectUrl = request.nextUrl.clone();
+      redirectUrl.pathname = "/pricing";
+      return NextResponse.redirect(redirectUrl);
+    }
+  }
+
   return supabaseResponse;
 }
