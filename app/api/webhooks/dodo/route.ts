@@ -63,6 +63,15 @@ export async function POST(req: Request) {
         if (data.subscription_id) {
           updateData.subscription_status = "active";
         }
+        // Fire referral reward check (non-blocking) 
+        if (dodoCustomerId) {
+          const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+          fetch(`${baseUrl}/api/referral/reward`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ dodo_customer_id: dodoCustomerId }),
+          }).catch((e) => console.error("Referral reward fire error:", e));
+        }
         break;
       case "payment.failed":
         if (data.subscription_id) {

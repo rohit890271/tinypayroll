@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
@@ -16,6 +16,8 @@ export function BusinessForm({ initialCountryCode }: BusinessFormProps) {
   // Use client-side timezone detection to refine the country code if server-side detection fell back to US
   const [countryCode, setCountryCode] = useState(initialCountryCode);
   const [stateValue, setStateValue] = useState("");
+  const [referralCode, setReferralCode] = useState("");
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     // If server said US but client-side timezone is clearly Indian Standard Time
@@ -28,6 +30,16 @@ export function BusinessForm({ initialCountryCode }: BusinessFormProps) {
       } catch (e) {
         // Safe fallback if Intl is not supported or throws
       }
+    }
+
+    // Read referral code from localStorage (set by signup page when ?ref= is present)
+    try {
+      const storedCode = localStorage.getItem("referral_code");
+      if (storedCode) {
+        setReferralCode(storedCode);
+      }
+    } catch {
+      // localStorage not available (SSR or browser restriction)
     }
   }, [initialCountryCode]);
 
@@ -44,6 +56,15 @@ export function BusinessForm({ initialCountryCode }: BusinessFormProps) {
     setStateValue("");
   };
 
+  const handleSubmit = () => {
+    // Clear referral code from localStorage after form submission
+    try {
+      localStorage.removeItem("referral_code");
+    } catch {
+      // ignore
+    }
+  };
+
   return (
     <div className="grid gap-6">
       {/* Country detection badge */}
@@ -54,10 +75,14 @@ export function BusinessForm({ initialCountryCode }: BusinessFormProps) {
         </span>
       </div>
 
-      <form action={createBusinessAction} className="rounded-[2rem] border border-ink/10 bg-white/85 p-6 shadow-soft backdrop-blur sm:p-8">
+      <form ref={formRef} action={createBusinessAction} onSubmit={handleSubmit} className="rounded-[2rem] border border-ink/10 bg-white/85 p-6 shadow-soft backdrop-blur sm:p-8">
         {/* Hidden fields to submit detected/chosen country and currency */}
         <input type="hidden" name="country_code" value={countryCode} />
         <input type="hidden" name="currency_code" value={currency} />
+        {/* Hidden referral code from localStorage */}
+        {referralCode && (
+          <input type="hidden" name="referral_code" value={referralCode} />
+        )}
 
         <div className="grid gap-5">
           <Input 
@@ -94,6 +119,13 @@ export function BusinessForm({ initialCountryCode }: BusinessFormProps) {
               </option>
             ))}
           </Select>
+
+          {referralCode && (
+            <div className="flex items-center gap-2 rounded-xl bg-payroll/5 border border-payroll/20 px-4 py-2.5 text-sm text-payroll">
+              <span>🎉</span>
+              <span>Referral code <strong>{referralCode}</strong> applied!</span>
+            </div>
+          )}
 
           <Button type="submit">Save business</Button>
         </div>

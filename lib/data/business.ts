@@ -12,6 +12,9 @@ export type Business = {
   dodo_subscription_id?: string;
   trial_ends_at?: string;
   subscription_ends_at?: string;
+  referral_code?: string;
+  referred_by_business_id?: string;
+  referral_credits_earned?: number;
   created_at?: string;
 };
 
@@ -39,7 +42,7 @@ export async function getCurrentUserBusiness(): Promise<{ user: User | null; bus
 
   const { data, error } = await supabase
     .from("businesses")
-    .select("id, owner_user_id, name, state, country_code, subscription_status, dodo_customer_id, dodo_subscription_id, trial_ends_at, subscription_ends_at, created_at")
+    .select("id, owner_user_id, name, state, country_code, subscription_status, dodo_customer_id, dodo_subscription_id, trial_ends_at, subscription_ends_at, referral_code, referred_by_business_id, referral_credits_earned, created_at")
     .eq("owner_user_id", user.id)
     .order("created_at", { ascending: true })
     .limit(1)
