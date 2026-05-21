@@ -18,9 +18,12 @@ export function LogoutButton() {
       type="button"
       onClick={handleLogout}
       disabled={isPending}
-      className="rounded-full border border-ink/10 px-4 py-2 text-sm font-semibold text-moss transition hover:bg-white disabled:opacity-60"
+      className="w-full flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-semibold text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors disabled:opacity-60"
     >
-      {isPending ? "Logging out..." : "Logout"}
+      <span className="flex items-center gap-2">
+        <span className="material-symbols-outlined text-[16px]">logout</span>
+        {isPending ? "Logging out..." : "Logout"}
+      </span>
     </button>
   );
 }

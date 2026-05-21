@@ -133,22 +133,21 @@ export function NewPayrollClient({
 
       if (runErr) throw runErr;
 
-      // Build line items
+      // Build line items — columns match live DB schema exactly
       const lineItems = employees.map((emp) => {
         const c = calcs[emp.id];
         const inputs = rowInputs[emp.id];
         return {
           payroll_run_id: run.id,
           employee_id: emp.id,
-          pay_type: emp.pay_type,
-          hours_worked: emp.pay_type === "hourly" ? Number(inputs.hoursWorked) || 0 : null,
-          overtime_hours: emp.pay_type === "hourly" ? Number(inputs.overtimeHours) || 0 : null,
+          hours_worked: emp.pay_type === "hourly" ? Number(inputs.hoursWorked) || 0 : 0,
+          overtime_hours: emp.pay_type === "hourly" ? Number(inputs.overtimeHours) || 0 : 0,
           unpaid_leave_days: Number(inputs.unpaidLeaveDays) || 0,
           bonus_amount: Number(inputs.bonusAmount) || 0,
           gross_pay: c?.gross_pay ?? 0,
-          total_deductions: c?.total_deductions ?? 0,
+          tax_withheld: c?.total_deductions ?? 0,
           net_pay: c?.net_pay ?? 0,
-          employer_total_cost: c?.employer_total_cost ?? 0,
+          employer_cost: c?.employer_total_cost ?? 0,
         };
       });
 
@@ -160,8 +159,9 @@ export function NewPayrollClient({
 
       success("Payroll processed successfully!");
       startTransition(() => router.push("/dashboard"));
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Save failed. Please try again.";
+    } catch (err: any) {
+      console.error("Payroll process error:", err);
+      const msg = err?.message || err?.toString() || "Save failed. Please try again.";
       error(msg);
     } finally {
       setProcessing(false);

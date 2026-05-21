@@ -9,8 +9,11 @@ import { formatCurrency } from "@/lib/payroll/formatCurrency";
 // ── Lazy imports (browser-only libs) ─────────────────────────────────────────
 async function getJsPDF() {
   const { default: JsPDF } = await import("jspdf");
-  await import("jspdf-autotable");
   return JsPDF;
+}
+async function getAutoTable() {
+  const { default: autoTable } = await import("jspdf-autotable");
+  return autoTable;
 }
 async function getJSZip() {
   const { default: JSZip } = await import("jszip");
@@ -76,11 +79,8 @@ export type PayslipData = {
 
 export async function generatePayslipPDF(data: PayslipData): Promise<Blob> {
   const JsPDF = await getJsPDF();
+  const autoTable = await getAutoTable();
   const doc = new JsPDF({ unit: "mm", format: "a4" });
-  // jspdf-autotable augments the doc prototype at runtime
-  // eslint-disable-next-line
-  const tbl = (doc as unknown as Record<string, unknown>).autoTable as Function;
-  const boundTbl = tbl.bind(doc);
 
   const { business, employee, calc, periodStart, periodEnd } = data;
   const cc = business.country_code ?? "US";
@@ -157,7 +157,7 @@ export async function generatePayslipPDF(data: PayslipData): Promise<Blob> {
     earningsRows.push(["Bonus", cur(bonusAmt)]);
   }
 
-  boundTbl({
+  autoTable(doc, {
     startY: y,
     head: [["Earnings", "Amount"]],
     body: earningsRows,
@@ -190,7 +190,7 @@ export async function generatePayslipPDF(data: PayslipData): Promise<Blob> {
     }
   }
 
-  boundTbl({
+  autoTable(doc, {
     startY: y,
     head: [["Deductions", "Amount"]],
     body: deductionRows,
@@ -231,7 +231,7 @@ export async function generatePayslipPDF(data: PayslipData): Promise<Blob> {
     }
   }
 
-  boundTbl({
+  autoTable(doc, {
     startY: y,
     head: [["Employer Cost Breakdown (For Business Owner)", "Amount"]],
     body: employerRows,

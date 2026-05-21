@@ -15,74 +15,69 @@ export default async function BillingPage() {
 
   const status = business.subscription_status || "inactive";
 
-  // Redirect to pricing page if there is no active subscription
   if (status !== "active" && status !== "trialing") {
     redirect("/pricing");
   }
 
-  // Format status badge
   const getStatusBadge = (status: string) => {
-    const map: Record<string, { bg: string; text: string }> = {
-      active: { bg: "bg-emerald-50 text-emerald-700 border-emerald-200", text: "Active" },
-      trialing: { bg: "bg-amber-50 text-amber-700 border-amber-200", text: "Trialing" },
-      past_due: { bg: "bg-red-50 text-red-700 border-red-200", text: "Past Due" },
-      cancelled: { bg: "bg-slate-100 text-slate-700 border-slate-200", text: "Cancelled" },
-      inactive: { bg: "bg-slate-100 text-slate-700 border-slate-200", text: "No Plan" },
-    };
-    const badge = map[status] || map.inactive;
-    return (
-      <span className={`inline-flex items-center px-3 py-1 text-xs font-bold rounded-full border ${badge.bg}`}>
-        {badge.text}
-      </span>
-    );
+    if (status === "active")
+      return <span className="inline-flex items-center rounded-full bg-emerald-900/60 border border-emerald-700/50 px-3 py-1 text-xs font-bold text-emerald-400">Active</span>;
+    if (status === "trialing")
+      return <span className="inline-flex items-center rounded-full bg-amber-900/60 border border-amber-700/50 px-3 py-1 text-xs font-bold text-amber-400">Trialing</span>;
+    if (status === "past_due")
+      return <span className="inline-flex items-center rounded-full bg-red-900/60 border border-red-700/50 px-3 py-1 text-xs font-bold text-red-400">Past Due</span>;
+    
+    return <span className="inline-flex items-center rounded-full bg-slate-800 border border-slate-600 px-3 py-1 text-xs font-bold text-slate-400">No Plan</span>;
   };
 
   const getBillingDateText = () => {
     if (status === "trialing" && business.trial_ends_at) {
       return `Trial ends on ${new Date(business.trial_ends_at).toLocaleDateString("en-US", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
+        day: "numeric", month: "long", year: "numeric",
       })}`;
     }
     if (status === "active" && business.subscription_ends_at) {
       return `Next billing date: ${new Date(business.subscription_ends_at).toLocaleDateString("en-US", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
+        day: "numeric", month: "long", year: "numeric",
       })}`;
     }
     return null;
   };
 
   return (
-    <section className="max-w-2xl">
-      <p className="text-sm font-bold uppercase tracking-[0.25em] text-payroll">Billing</p>
-      <h1 className="mt-4 text-4xl font-black text-ink">Subscription</h1>
+    <section className="max-w-2xl flex flex-col gap-6">
+      <div>
+        <h1 className="font-headline text-4xl font-black tracking-tight text-primary leading-tight">
+          Subscription
+        </h1>
+      </div>
 
-      <div className="mt-8 rounded-3xl border border-ink/10 bg-white/80 p-6 shadow-soft backdrop-blur text-moss">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-ink/10 pb-6">
-          <div>
-            <h2 className="text-2xl font-black text-ink">TinyPayroll Pro</h2>
-            <p className="text-sm text-moss mt-1">Billed Monthly</p>
+      <div className="rounded-xl border border-outline-variant bg-surface-container-lowest p-6 shadow-card">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-outline-variant pb-6">
+          <div className="flex items-center gap-3">
+            <span className="material-symbols-outlined text-4xl text-primary">credit_score</span>
+            <div>
+              <h2 className="font-headline text-2xl font-black text-primary">TinyPayroll Pro</h2>
+              <p className="text-sm text-on-surface-variant mt-0.5">Billed Monthly</p>
+            </div>
           </div>
           <div>{getStatusBadge(status)}</div>
         </div>
 
         <div className="mt-6 space-y-4">
           <div className="flex justify-between text-sm">
-            <span className="text-moss/70">Plan Status:</span>
-            <span className="font-semibold capitalize text-ink">{status}</span>
+            <span className="text-on-surface-variant">Plan Status:</span>
+            <span className="font-semibold capitalize text-on-surface">{status}</span>
           </div>
           {getBillingDateText() && (
             <div className="flex justify-between text-sm">
-              <span className="text-moss/70">Billing Details:</span>
-              <span className="font-semibold text-ink">{getBillingDateText()}</span>
+              <span className="text-on-surface-variant">Billing Details:</span>
+              <span className="font-semibold text-on-surface">{getBillingDateText()}</span>
             </div>
           )}
         </div>
 
-        <div className="mt-8 pt-6 border-t border-ink/10 flex justify-end">
+        <div className="mt-8 pt-6 border-t border-outline-variant flex justify-end">
           <ManageButton />
         </div>
       </div>
