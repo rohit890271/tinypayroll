@@ -15,7 +15,7 @@ type Props = {
 };
 
 const numInput =
-  "w-24 rounded-lg border border-ink/15 bg-white px-2.5 py-1.5 text-right text-sm text-ink tabular-nums outline-none transition focus:border-payroll focus:ring-2 focus:ring-payroll/10 disabled:bg-cream/50 disabled:text-moss/50";
+  "w-24 rounded-lg border border-outline-variant bg-surface-container-lowest px-2.5 py-1.5 text-right text-sm text-on-surface tabular-nums outline-none transition focus:border-success-action focus:ring-2 focus:ring-success-action/10 disabled:bg-surface-container disabled:text-on-surface-variant/50";
 
 export function EmployeeRow({
   emp,
@@ -35,16 +35,16 @@ export function EmployeeRow({
     .toUpperCase();
 
   return (
-    <tr className="group transition hover:bg-oat/30">
+    <tr className="group transition hover:bg-surface-container/50">
       {/* Name */}
       <td className="px-4 py-3">
         <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-payroll/10 text-xs font-bold text-payroll">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary-container text-xs font-bold text-success-action">
             {initials}
           </div>
           <div>
-            <p className="font-semibold text-ink leading-tight">{emp.name}</p>
-            <p className="text-xs text-moss capitalize">{emp.pay_type}</p>
+            <p className="font-semibold text-on-surface leading-tight">{emp.name}</p>
+            <p className="text-xs text-on-surface-variant capitalize">{emp.pay_type}</p>
           </div>
         </div>
       </td>
@@ -109,7 +109,7 @@ export function EmployeeRow({
 
       {/* Gross Pay */}
       <td className="px-4 py-3 text-right">
-        <span className="font-semibold tabular-nums text-ink">
+        <span className="font-semibold tabular-nums text-on-surface">
           {calc ? formatCurrency(calc.gross_pay, cc) : "—"}
         </span>
       </td>
@@ -119,7 +119,7 @@ export function EmployeeRow({
         <button
           type="button"
           id={`net-pay-btn-${emp.id}`}
-          className="font-bold tabular-nums text-payroll underline decoration-dotted underline-offset-2 hover:text-payroll/80 transition cursor-help"
+          className="font-bold tabular-nums text-success-action underline decoration-dotted underline-offset-2 hover:opacity-80 transition cursor-help"
           onMouseEnter={() => setTooltipEmpId(emp.id)}
           onMouseLeave={() => setTooltipEmpId(null)}
           onClick={() =>

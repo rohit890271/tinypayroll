@@ -27,30 +27,30 @@ export function DeductionsTooltip({ calc, cc }: Props) {
   return (
     <div
       role="tooltip"
-      className="absolute right-0 top-full z-30 mt-2 min-w-[220px] rounded-xl border border-ink/10 bg-white p-4 shadow-soft"
+      className="absolute right-0 top-full z-30 mt-2 min-w-[220px] rounded-xl border border-outline-variant bg-surface-container-lowest p-4 shadow-modal"
     >
-      <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-moss">
+      <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
         Deductions Breakdown
       </p>
       <ul className="space-y-1.5">
         {rows.map(({ label, value }) => (
           <li key={label} className="flex justify-between gap-6 text-sm">
-            <span className="text-moss">{label}</span>
-            <span className="tabular-nums font-medium text-ink">
+            <span className="text-on-surface-variant">{label}</span>
+            <span className="tabular-nums font-medium text-on-surface">
               {formatCurrency(value, cc)}
             </span>
           </li>
         ))}
       </ul>
-      <div className="mt-3 flex justify-between border-t border-ink/10 pt-2.5 text-sm font-semibold">
-        <span className="text-ink">Total Deductions</span>
-        <span className="tabular-nums text-red-600">
+      <div className="mt-3 flex justify-between border-t border-outline-variant pt-2.5 text-sm font-semibold">
+        <span className="text-on-surface">Total Deductions</span>
+        <span className="tabular-nums text-error">
           -{formatCurrency(calc.total_deductions, cc)}
         </span>
       </div>
       <div className="mt-1.5 flex justify-between text-sm font-bold">
-        <span className="text-payroll">Net Pay</span>
-        <span className="tabular-nums text-payroll">
+        <span className="text-success-action">Net Pay</span>
+        <span className="tabular-nums text-success-action">
           {formatCurrency(calc.net_pay, cc)}
         </span>
       </div>

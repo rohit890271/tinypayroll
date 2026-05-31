@@ -157,15 +157,15 @@ export function NewPayrollClient({
     <section className="flex flex-col gap-0 min-h-full">
       {/* ── Header ── */}
       <div className="mb-8">
-        <p className="text-xs font-semibold uppercase tracking-widest text-payroll mb-2">Payroll</p>
-        <h1 className="text-3xl font-black text-ink">New Payroll Run</h1>
-        <p className="mt-1 text-sm text-moss">{business.name} · {payCycleLabel}</p>
+        <p className="text-xs font-semibold uppercase tracking-widest text-success-action mb-2">Payroll</p>
+        <h1 className="text-3xl font-black text-on-surface">New Payroll Run</h1>
+        <p className="mt-1 text-sm text-on-surface-variant">{business.name} · {payCycleLabel}</p>
       </div>
 
       {/* ── Pay Period Selector ── */}
-      <div className="mb-6 flex flex-wrap gap-4 rounded-2xl border border-ink/10 bg-white/70 p-5">
+      <div className="mb-6 flex flex-wrap gap-4 rounded-2xl border border-outline-variant bg-surface-container-lowest p-5">
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="period-start" className="text-xs font-semibold uppercase tracking-wider text-moss">
+          <label htmlFor="period-start" className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
             Start Date
           </label>
           <input
@@ -173,11 +173,11 @@ export function NewPayrollClient({
             type="date"
             value={periodStart}
             onChange={(e) => setPeriodStart(e.target.value)}
-            className="rounded-xl border border-ink/15 bg-white px-4 py-2.5 text-sm text-ink outline-none focus:border-payroll focus:ring-2 focus:ring-payroll/10"
+            className="rounded-xl border border-outline-variant bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface outline-none focus:border-success-action focus:ring-2 focus:ring-success-action/10"
           />
         </div>
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="period-end" className="text-xs font-semibold uppercase tracking-wider text-moss">
+          <label htmlFor="period-end" className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
             End Date
           </label>
           <input
@@ -185,11 +185,11 @@ export function NewPayrollClient({
             type="date"
             value={periodEnd}
             onChange={(e) => setPeriodEnd(e.target.value)}
-            className="rounded-xl border border-ink/15 bg-white px-4 py-2.5 text-sm text-ink outline-none focus:border-payroll focus:ring-2 focus:ring-payroll/10"
+            className="rounded-xl border border-outline-variant bg-surface-container-lowest px-4 py-2.5 text-sm text-on-surface outline-none focus:border-success-action focus:ring-2 focus:ring-success-action/10"
           />
         </div>
         <div className="flex items-end">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-payroll/10 px-3 py-2 text-xs font-semibold text-payroll">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-primary-container px-3 py-2 text-xs font-semibold text-success-action">
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" /></svg>
             {payCycleLabel}
           </span>
@@ -198,19 +198,19 @@ export function NewPayrollClient({
 
       {/* ── Empty State ── */}
       {noEmployees ? (
-        <div className="flex flex-1 flex-col items-center justify-center gap-4 rounded-2xl border-2 border-dashed border-ink/10 py-20 text-center">
-          <div className="rounded-full bg-oat p-4">
-            <svg className="w-8 h-8 text-moss" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+        <div className="flex flex-1 flex-col items-center justify-center gap-4 rounded-2xl border-2 border-dashed border-outline-variant py-20 text-center">
+          <div className="rounded-full bg-surface-container-high p-4">
+            <svg className="w-8 h-8 text-on-surface-variant" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
             </svg>
           </div>
           <div>
-            <p className="font-semibold text-ink">No employees yet</p>
-            <p className="mt-1 text-sm text-moss">Add employees before running payroll.</p>
+            <p className="font-semibold text-on-surface">No employees yet</p>
+            <p className="mt-1 text-sm text-on-surface-variant">Add employees before running payroll.</p>
           </div>
           <a
             href="/dashboard/employees"
-            className="mt-2 inline-flex items-center gap-2 rounded-full bg-payroll px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-payroll/90 transition"
+            className="mt-2 inline-flex items-center gap-2 rounded-full bg-success-action px-5 py-2.5 text-sm font-semibold text-on-primary shadow-sm hover:opacity-90 transition"
           >
             Add Employees
           </a>
@@ -218,19 +218,19 @@ export function NewPayrollClient({
       ) : (
         <>
           {/* ── Employee Table ── */}
-          <div className="overflow-x-auto rounded-2xl border border-ink/10 bg-white/70">
+          <div className="overflow-x-auto rounded-2xl border border-outline-variant bg-surface-container-lowest">
             <table className="w-full border-collapse text-sm">
               <thead>
-                <tr className="border-b border-ink/10 bg-cream/60">
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-moss">Employee</th>
-                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-moss">Hours</th>
-                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-moss">OT Hours</th>
-                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-moss">Leave Days</th>
-                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-moss">Bonus</th>
-                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-moss">Gross Pay</th>
-                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-moss">
+                <tr className="border-b border-outline-variant bg-surface-container-low">
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Employee</th>
+                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Hours</th>
+                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-on-surface-variant">OT Hours</th>
+                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Leave Days</th>
+                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Bonus</th>
+                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Gross Pay</th>
+                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
                     Net Pay
-                    <span className="ml-1 text-[10px] text-moss/50">(hover ▸ breakdown)</span>
+                    <span className="ml-1 text-[10px] text-on-surface-variant/50">(hover ▸ breakdown)</span>
                   </th>
                 </tr>
               </thead>
@@ -252,19 +252,19 @@ export function NewPayrollClient({
           </div>
 
           {/* ── Bottom Bar ── */}
-          <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-ink/10 bg-white/80 px-6 py-4 shadow-soft">
+          <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-outline-variant bg-surface-container-lowest px-6 py-4 shadow-soft">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-moss">Total Payroll Cost</p>
-              <p className="mt-0.5 text-2xl font-black text-ink tabular-nums">
+              <p className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Total Payroll Cost</p>
+              <p className="mt-0.5 text-2xl font-black text-on-surface tabular-nums">
                 {formatCurrency(totalCost, cc)}
               </p>
-              <p className="text-xs text-moss/70">Includes employer contributions</p>
+              <p className="text-xs text-on-surface-variant/70">Includes employer contributions</p>
             </div>
             <div className="flex gap-3">
               <button
                 id="btn-preview-payroll"
                 onClick={() => { setShowPreview(true); setPreviewSeen(true); }}
-                className="inline-flex items-center gap-2 rounded-full border border-ink/20 bg-white px-5 py-2.5 text-sm font-semibold text-ink shadow-sm hover:bg-cream transition"
+                className="inline-flex items-center gap-2 rounded-full border border-outline-variant bg-surface-container-lowest px-5 py-2.5 text-sm font-semibold text-on-surface shadow-sm hover:bg-surface-container transition"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" /><circle cx="12" cy="12" r="3" /></svg>
                 Preview Payroll
@@ -273,7 +273,7 @@ export function NewPayrollClient({
                 id="btn-confirm-process"
                 disabled={!previewSeen || processing}
                 onClick={handleConfirm}
-                className="inline-flex items-center gap-2 rounded-full bg-payroll px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-payroll/90 disabled:cursor-not-allowed disabled:opacity-40"
+                className="inline-flex items-center gap-2 rounded-full bg-success-action px-5 py-2.5 text-sm font-semibold text-on-primary shadow-sm transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 {processing ? (
                   <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>

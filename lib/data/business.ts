@@ -114,6 +114,34 @@ export async function getPayrollRuns(businessId: string): Promise<PayrollRun[]> 
   return (data ?? []) as PayrollRun[];
 }
 
+/**
+ * Sum of employer_cost (total employer outlay) across processed payroll runs in
+ * the current calendar year. Returns 0 if the business has no runs yet.
+ */
+export async function getYtdPaidTotal(businessId: string): Promise<number> {
+  const supabase = createClient();
+  const yearStart = `${new Date().getFullYear()}-01-01`;
+
+  const { data: runs, error: runErr } = await supabase
+    .from("payroll_runs")
+    .select("id")
+    .eq("business_id", businessId)
+    .eq("status", "processed")
+    .gte("run_date", yearStart);
+
+  if (runErr) throw new Error(runErr.message);
+  const runIds = (runs ?? []).map((r) => r.id);
+  if (runIds.length === 0) return 0;
+
+  const { data: items, error: itemErr } = await supabase
+    .from("payroll_line_items")
+    .select("employer_cost")
+    .in("payroll_run_id", runIds);
+
+  if (itemErr) throw new Error(itemErr.message);
+  return (items ?? []).reduce((sum, it: { employer_cost: number }) => sum + Number(it.employer_cost ?? 0), 0);
+}
+
 export async function getPayrollRunDetail(
   runId: string,
   businessId: string

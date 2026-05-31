@@ -30,17 +30,17 @@ export function EmployeeForm({ action }: { action: (formData: FormData) => Promi
   };
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-5 rounded-[2rem] border border-ink/10 bg-white/85 p-6 shadow-soft">
+    <form onSubmit={handleSubmit} className="grid gap-5 rounded-[2rem] border border-outline-variant bg-surface-container-lowest p-6 shadow-soft">
       <div className="grid gap-4 sm:grid-cols-2">
         <Input label="Employee name" name="name" required />
         <Input label="Email" name="email" type="email" required />
       </div>
 
       <fieldset className="grid gap-3">
-        <legend className="text-sm font-semibold text-ink">Pay type</legend>
-        <div className="grid grid-cols-2 gap-3 rounded-2xl bg-cream p-2">
+        <legend className="text-sm font-semibold text-on-surface">Pay type</legend>
+        <div className="grid grid-cols-2 gap-3 rounded-2xl bg-surface-container-low p-2">
           {(["hourly", "salary"] as const).map((type) => (
-            <label key={type} className={`cursor-pointer rounded-xl px-4 py-3 text-center text-sm font-bold capitalize transition ${payType === type ? "bg-payroll text-white" : "text-moss hover:bg-white"}`}>
+            <label key={type} className={`cursor-pointer rounded-xl px-4 py-3 text-center text-sm font-bold capitalize transition ${payType === type ? "bg-success-action text-on-primary" : "text-on-surface-variant hover:bg-surface-container-lowest"}`}>
               <input
                 className="sr-only"
                 type="radio"

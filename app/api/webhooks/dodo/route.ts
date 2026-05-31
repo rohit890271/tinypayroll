@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { Webhook } from "standardwebhooks";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getDodoEnv } from "@/lib/env";
+import { processReferralReward } from "@/lib/referral/reward";
 
 export async function POST(req: Request) {
   try {
@@ -26,13 +27,32 @@ export async function POST(req: Request) {
     const eventType = event.type;
     const data = event.data;
 
+    const supabase = createAdminClient();
+
+    // Idempotency: claim this webhook-id before doing any work. A replay/retry
+    // hits the primary-key conflict (23505) and is acknowledged without
+    // reprocessing. Missing header → process normally (can't dedup).
+    const webhookId = headers["webhook-id"];
+    if (webhookId) {
+      const { error: dedupErr } = await supabase
+        .from("processed_webhooks")
+        .insert({ webhook_id: webhookId, event_type: eventType });
+      if (dedupErr) {
+        if (dedupErr.code === "23505") {
+          return NextResponse.json({ received: true, duplicate: true });
+        }
+        // Non-conflict insert error: log and continue (don't drop the event).
+        console.error("Webhook dedup insert error:", dedupErr.message);
+      }
+    } else {
+      console.warn("Webhook missing webhook-id header; processing without dedup.");
+    }
+
     const dodoCustomerId = data.customer?.customer_id;
     if (!dodoCustomerId) {
       console.warn("No customer_id found in webhook payload:", eventType);
       return NextResponse.json({ received: true });
     }
-
-    const supabase = createAdminClient();
 
     const updateData: any = {};
     if (data.subscription_id) {
@@ -63,14 +83,11 @@ export async function POST(req: Request) {
         if (data.subscription_id) {
           updateData.subscription_status = "active";
         }
-        // Fire referral reward check (non-blocking) 
-        if (dodoCustomerId) {
-          const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-          fetch(`${baseUrl}/api/referral/reward`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ dodo_customer_id: dodoCustomerId }),
-          }).catch((e) => console.error("Referral reward fire error:", e));
+        // Process the referral reward in-process (never throws / never blocks the 200).
+        try {
+          await processReferralReward(dodoCustomerId);
+        } catch (e: any) {
+          console.error("Referral reward error:", e?.message ?? e);
         }
         break;
       case "payment.failed":

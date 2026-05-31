@@ -20,14 +20,15 @@ export default async function BillingPage() {
   }
 
   const getStatusBadge = (status: string) => {
+    const base = "inline-flex items-center rounded-full px-3 py-1 text-xs font-bold border";
     if (status === "active")
-      return <span className="inline-flex items-center rounded-full bg-emerald-900/60 border border-emerald-700/50 px-3 py-1 text-xs font-bold text-emerald-400">Active</span>;
+      return <span className={`${base} bg-primary-container border-success-action/30 text-success-action`}>Active</span>;
     if (status === "trialing")
-      return <span className="inline-flex items-center rounded-full bg-amber-900/60 border border-amber-700/50 px-3 py-1 text-xs font-bold text-amber-400">Trialing</span>;
+      return <span className={`${base} bg-tertiary-container border-tertiary/30 text-tertiary`}>Trialing</span>;
     if (status === "past_due")
-      return <span className="inline-flex items-center rounded-full bg-red-900/60 border border-red-700/50 px-3 py-1 text-xs font-bold text-red-400">Past Due</span>;
-    
-    return <span className="inline-flex items-center rounded-full bg-slate-800 border border-slate-600 px-3 py-1 text-xs font-bold text-slate-400">No Plan</span>;
+      return <span className={`${base} bg-error-container border-error/30 text-error`}>Past Due</span>;
+
+    return <span className={`${base} bg-surface-container border-outline-variant text-on-surface-variant`}>No Plan</span>;
   };
 
   const getBillingDateText = () => {

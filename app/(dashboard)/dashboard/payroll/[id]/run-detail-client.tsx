@@ -93,21 +93,21 @@ export function RunDetailClient({ run, lineItems, business }: Props) {
     }
   }
 
-  const badgeBg = run.status === "processed" ? "bg-emerald-50" : run.status === "failed" ? "bg-red-50" : "bg-amber-50";
-  const badgeText = run.status === "processed" ? "text-emerald-700" : run.status === "failed" ? "text-red-700" : "text-amber-700";
-  const badgeDot = run.status === "processed" ? "bg-emerald-500" : run.status === "failed" ? "bg-red-500" : "bg-amber-400";
+  const badgeBg = run.status === "processed" ? "bg-primary-container" : run.status === "failed" ? "bg-error-container" : "bg-tertiary-container";
+  const badgeText = run.status === "processed" ? "text-success-action" : run.status === "failed" ? "text-error" : "text-tertiary";
+  const badgeDot = run.status === "processed" ? "bg-success-action" : run.status === "failed" ? "bg-error" : "bg-tertiary";
 
   return (
     <section className="flex flex-col gap-8 pb-24">
       {/* ── Header ── */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <Link href="/dashboard" className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-moss hover:text-ink transition">
+          <Link href="/dashboard" className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-on-surface-variant hover:text-on-surface transition">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" /></svg>
             Back to Dashboard
           </Link>
           <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-black tracking-tight text-ink">
+            <h1 className="text-3xl font-black tracking-tight text-on-surface">
               Payroll Run Details
             </h1>
             <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${badgeBg} ${badgeText}`}>
@@ -115,7 +115,7 @@ export function RunDetailClient({ run, lineItems, business }: Props) {
               {run.status.charAt(0).toUpperCase() + run.status.slice(1)}
             </span>
           </div>
-          <p className="mt-1 text-sm text-moss">
+          <p className="mt-1 text-sm text-on-surface-variant">
             Period: {fmtDate(run.pay_period_start)} – {fmtDate(run.pay_period_end)} &nbsp;·&nbsp; Ran on {fmtDate(run.run_date)}
           </p>
         </div>
@@ -123,7 +123,7 @@ export function RunDetailClient({ run, lineItems, business }: Props) {
           id="btn-download-all"
           onClick={handleDownloadAll}
           disabled={downloading !== null}
-          className="inline-flex items-center gap-2 rounded-full bg-payroll px-5 py-3 text-sm font-semibold text-white shadow-soft hover:bg-payroll/90 transition disabled:opacity-40"
+          className="inline-flex items-center gap-2 rounded-full bg-success-action px-5 py-3 text-sm font-semibold text-on-primary shadow-soft hover:opacity-90 transition disabled:opacity-40"
         >
           {downloading === "all" ? (
             <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -141,53 +141,53 @@ export function RunDetailClient({ run, lineItems, business }: Props) {
 
       {/* ── Summary Stats ── */}
       <div className="grid gap-4 sm:grid-cols-4">
-        <div className="rounded-2xl border border-ink/10 bg-white/80 p-5 shadow-soft">
-          <p className="text-xs font-semibold uppercase tracking-wider text-moss">Employees</p>
-          <p className="mt-2 text-2xl font-black text-ink">{lineItems.length}</p>
+        <div className="rounded-2xl border border-outline-variant bg-surface-container-lowest p-5 shadow-soft">
+          <p className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Employees</p>
+          <p className="mt-2 text-2xl font-black text-on-surface">{lineItems.length}</p>
         </div>
-        <div className="rounded-2xl border border-ink/10 bg-white/80 p-5 shadow-soft">
-          <p className="text-xs font-semibold uppercase tracking-wider text-moss">Total Gross</p>
-          <p className="mt-2 text-2xl font-black tabular-nums text-ink">{formatCurrency(totalGross, cc)}</p>
+        <div className="rounded-2xl border border-outline-variant bg-surface-container-lowest p-5 shadow-soft">
+          <p className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Total Gross</p>
+          <p className="mt-2 text-2xl font-black tabular-nums text-on-surface">{formatCurrency(totalGross, cc)}</p>
         </div>
-        <div className="rounded-2xl border border-ink/10 bg-white/80 p-5 shadow-soft">
-          <p className="text-xs font-semibold uppercase tracking-wider text-moss">Total Net Pay</p>
-          <p className="mt-2 text-2xl font-black tabular-nums text-payroll">{formatCurrency(totalNet, cc)}</p>
+        <div className="rounded-2xl border border-outline-variant bg-surface-container-lowest p-5 shadow-soft">
+          <p className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Total Net Pay</p>
+          <p className="mt-2 text-2xl font-black tabular-nums text-success-action">{formatCurrency(totalNet, cc)}</p>
         </div>
-        <div className="rounded-2xl border border-ink/10 bg-white/80 p-5 shadow-soft">
-          <p className="text-xs font-semibold uppercase tracking-wider text-moss">Employer Cost</p>
-          <p className="mt-2 text-2xl font-black tabular-nums text-ink">{formatCurrency(totalCost, cc)}</p>
+        <div className="rounded-2xl border border-outline-variant bg-surface-container-lowest p-5 shadow-soft">
+          <p className="text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Employer Cost</p>
+          <p className="mt-2 text-2xl font-black tabular-nums text-on-surface">{formatCurrency(totalCost, cc)}</p>
         </div>
       </div>
 
       {/* ── Line Items Table ── */}
-      <div className="overflow-x-auto rounded-2xl border border-ink/10 bg-white/80 shadow-soft">
+      <div className="overflow-x-auto rounded-2xl border border-outline-variant bg-surface-container-lowest shadow-soft">
         <table className="w-full border-collapse text-sm">
           <thead>
-            <tr className="border-b border-ink/5 bg-cream/40">
-              <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-moss">Employee</th>
-              <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-moss">Gross Pay</th>
-              <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-moss">Deductions</th>
-              <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-moss">Net Pay</th>
-              <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-moss">Action</th>
+            <tr className="border-b border-outline-variant bg-surface-container-low">
+              <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Employee</th>
+              <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Gross Pay</th>
+              <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Deductions</th>
+              <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Net Pay</th>
+              <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-on-surface-variant">Action</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-ink/5">
             {lineItems.map((item) => {
               const isDownloading = downloading === item.id;
               return (
-                <tr key={item.id} className="transition hover:bg-oat/20">
+                <tr key={item.id} className="transition hover:bg-surface-container/40">
                   <td className="px-6 py-4">
-                    <p className="font-semibold text-ink">{item.employee?.name ?? "Unknown"}</p>
-                    <p className="text-xs text-moss capitalize">{item.pay_type}</p>
+                    <p className="font-semibold text-on-surface">{item.employee?.name ?? "Unknown"}</p>
+                    <p className="text-xs text-on-surface-variant capitalize">{item.pay_type}</p>
                   </td>
-                  <td className="px-6 py-4 text-right tabular-nums text-ink">{formatCurrency(item.gross_pay, cc)}</td>
-                  <td className="px-6 py-4 text-right tabular-nums text-red-500">-{formatCurrency(item.tax_withheld, cc)}</td>
-                  <td className="px-6 py-4 text-right tabular-nums font-semibold text-payroll">{formatCurrency(item.net_pay, cc)}</td>
+                  <td className="px-6 py-4 text-right tabular-nums text-on-surface">{formatCurrency(item.gross_pay, cc)}</td>
+                  <td className="px-6 py-4 text-right tabular-nums text-error">-{formatCurrency(item.tax_withheld, cc)}</td>
+                  <td className="px-6 py-4 text-right tabular-nums font-semibold text-success-action">{formatCurrency(item.net_pay, cc)}</td>
                   <td className="px-6 py-4 text-right">
                     <button
                       onClick={() => handleDownloadSingle(item)}
                       disabled={downloading !== null}
-                      className="inline-flex items-center gap-1.5 rounded-full border border-ink/20 bg-white px-3 py-1.5 text-xs font-semibold text-ink hover:bg-cream transition disabled:opacity-40 disabled:cursor-not-allowed"
+                      className="inline-flex items-center gap-1.5 rounded-full border border-outline bg-surface-container-lowest px-3 py-1.5 text-xs font-semibold text-on-surface hover:bg-surface-container transition disabled:opacity-40 disabled:cursor-not-allowed"
                     >
                       {isDownloading ? (
                         <svg className="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24">

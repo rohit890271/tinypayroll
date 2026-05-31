@@ -32,8 +32,8 @@ export function CopyButton({ text }: CopyButtonProps) {
       onClick={handleCopy}
       className={`shrink-0 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all ${
         copied
-          ? "bg-emerald-500 text-white"
-          : "bg-payroll text-white hover:bg-payroll/90"
+          ? "bg-success-action text-on-primary"
+          : "bg-success-action text-on-primary hover:opacity-90"
       }`}
     >
       {copied ? "Copied!" : "Copy link"}

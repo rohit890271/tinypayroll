@@ -96,19 +96,19 @@ export function PreviewModal({
     >
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-ink/30 backdrop-blur-sm"
+        className="absolute inset-0 bg-inverse-surface/40 backdrop-blur-sm"
         onClick={onClose}
       />
 
       {/* Panel */}
-      <div className="relative z-10 w-full max-w-3xl rounded-2xl border border-ink/10 bg-white shadow-soft">
+      <div className="relative z-10 w-full max-w-3xl rounded-2xl border border-outline-variant bg-surface-container-lowest shadow-soft">
         {/* Modal Header */}
-        <div className="flex items-center justify-between border-b border-ink/10 px-6 py-5">
+        <div className="flex items-center justify-between border-b border-outline-variant px-6 py-5">
           <div>
-            <h2 id="preview-modal-title" className="text-lg font-bold text-ink">
+            <h2 id="preview-modal-title" className="text-lg font-bold text-on-surface">
               Payroll Preview
             </h2>
-            <p className="mt-0.5 text-sm text-moss">
+            <p className="mt-0.5 text-sm text-on-surface-variant">
               {fmtDate(periodStart)} – {fmtDate(periodEnd)}
             </p>
           </div>
@@ -118,7 +118,7 @@ export function PreviewModal({
               id="btn-download-all"
               onClick={handleDownloadAll}
               disabled={downloading !== null}
-              className="inline-flex items-center gap-1.5 rounded-full border border-payroll/30 bg-payroll/5 px-4 py-2 text-xs font-semibold text-payroll hover:bg-payroll/10 transition disabled:opacity-40"
+              className="inline-flex items-center gap-1.5 rounded-full border border-success-action/30 bg-primary-container px-4 py-2 text-xs font-semibold text-success-action hover:opacity-90 transition disabled:opacity-40"
             >
               {downloading === "all" ? (
                 <svg className="w-3.5 h-3.5 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -136,7 +136,7 @@ export function PreviewModal({
               id="btn-close-preview"
               onClick={onClose}
               aria-label="Close preview"
-              className="rounded-full p-2 text-moss hover:bg-cream transition"
+              className="rounded-full p-2 text-on-surface-variant hover:bg-surface-container transition"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -149,41 +149,41 @@ export function PreviewModal({
         <div className="overflow-x-auto px-2 pb-2">
           <table className="w-full border-collapse text-sm">
             <thead>
-              <tr className="border-b border-ink/10 bg-cream/50">
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-moss">
+              <tr className="border-b border-outline-variant bg-surface-container-low">
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
                   Employee
                 </th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-moss">
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
                   Gross Pay
                 </th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-moss">
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
                   Deductions
                 </th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-moss">
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
                   Net Pay
                 </th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-moss">
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
                   Payslip
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-ink/5">
+            <tbody className="divide-y divide-outline-variant">
               {employees.map((emp) => {
                 const c = calcs[emp.id];
                 const isDownloading = downloading === emp.id;
                 return (
-                  <tr key={emp.id} className="hover:bg-oat/20 transition">
+                  <tr key={emp.id} className="hover:bg-surface-container/40 transition">
                     <td className="px-4 py-3">
-                      <p className="font-medium text-ink">{emp.name}</p>
-                      <p className="text-xs text-moss capitalize">{emp.pay_type}</p>
+                      <p className="font-medium text-on-surface">{emp.name}</p>
+                      <p className="text-xs text-on-surface-variant capitalize">{emp.pay_type}</p>
                     </td>
-                    <td className="px-4 py-3 text-right tabular-nums text-ink">
+                    <td className="px-4 py-3 text-right tabular-nums text-on-surface">
                       {c ? formatCurrency(c.gross_pay, cc) : "—"}
                     </td>
-                    <td className="px-4 py-3 text-right tabular-nums text-red-500">
+                    <td className="px-4 py-3 text-right tabular-nums text-error">
                       {c ? `-${formatCurrency(c.total_deductions, cc)}` : "—"}
                     </td>
-                    <td className="px-4 py-3 text-right tabular-nums font-semibold text-payroll">
+                    <td className="px-4 py-3 text-right tabular-nums font-semibold text-success-action">
                       {c ? formatCurrency(c.net_pay, cc) : "—"}
                     </td>
                     <td className="px-4 py-3 text-right">
@@ -191,7 +191,7 @@ export function PreviewModal({
                         id={`btn-download-payslip-${emp.id}`}
                         onClick={() => handleDownloadSingle(emp)}
                         disabled={downloading !== null || !c}
-                        className="inline-flex items-center gap-1 rounded-full bg-payroll px-3 py-1.5 text-xs font-semibold text-white hover:bg-payroll/90 transition disabled:opacity-40 disabled:cursor-not-allowed"
+                        className="inline-flex items-center gap-1 rounded-full bg-success-action px-3 py-1.5 text-xs font-semibold text-on-primary hover:opacity-90 transition disabled:opacity-40 disabled:cursor-not-allowed"
                       >
                         {isDownloading ? (
                           <svg className="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -212,15 +212,15 @@ export function PreviewModal({
             </tbody>
             {/* Grand Totals */}
             <tfoot>
-              <tr className="border-t-2 border-ink/20 bg-cream/40 font-bold">
-                <td className="px-4 py-3 text-ink">Grand Total</td>
-                <td className="px-4 py-3 text-right tabular-nums text-ink">
+              <tr className="border-t-2 border-outline bg-surface-container font-bold">
+                <td className="px-4 py-3 text-on-surface">Grand Total</td>
+                <td className="px-4 py-3 text-right tabular-nums text-on-surface">
                   {formatCurrency(totalGross, cc)}
                 </td>
-                <td className="px-4 py-3 text-right tabular-nums text-red-600">
+                <td className="px-4 py-3 text-right tabular-nums text-error">
                   -{formatCurrency(totalDeductions, cc)}
                 </td>
-                <td className="px-4 py-3 text-right tabular-nums text-payroll">
+                <td className="px-4 py-3 text-right tabular-nums text-success-action">
                   {formatCurrency(totalNet, cc)}
                 </td>
                 <td />
@@ -230,17 +230,17 @@ export function PreviewModal({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between border-t border-ink/10 px-6 py-4">
+        <div className="flex items-center justify-between border-t border-outline-variant px-6 py-4">
           <div>
-            <p className="text-xs text-moss">Total employer cost (incl. contributions)</p>
-            <p className="text-xl font-black tabular-nums text-ink">
+            <p className="text-xs text-on-surface-variant">Total employer cost (incl. contributions)</p>
+            <p className="text-xl font-black tabular-nums text-on-surface">
               {formatCurrency(totalCost, cc)}
             </p>
           </div>
           <button
             id="btn-close-preview-footer"
             onClick={onClose}
-            className="rounded-full border border-ink/20 bg-white px-5 py-2.5 text-sm font-semibold text-ink hover:bg-cream transition"
+            className="rounded-full border border-outline bg-surface-container-lowest px-5 py-2.5 text-sm font-semibold text-on-surface hover:bg-surface-container transition"
           >
             Close
           </button>

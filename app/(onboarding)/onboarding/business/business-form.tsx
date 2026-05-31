@@ -85,14 +85,14 @@ export function BusinessForm({ initialCountryCode }: BusinessFormProps) {
   return (
     <div className="grid gap-6">
       {/* Country detection badge */}
-      <div className="inline-flex items-center gap-2 self-start rounded-full border border-payroll/20 bg-payroll/5 px-4 py-2">
+      <div className="inline-flex items-center gap-2 self-start rounded-full border border-success-action/30 bg-primary-container px-4 py-2">
         <span className="text-lg">{isIndia ? "🇮🇳" : "🇺🇸"}</span>
-        <span className="text-sm font-semibold text-payroll">
+        <span className="text-sm font-semibold text-success-action">
           Active Workspace Region: {isIndia ? "India" : "United States"} · {currency} ({currencySymbol})
         </span>
       </div>
 
-      <form ref={formRef} onSubmit={handleSubmit} className="rounded-[2rem] border border-ink/10 bg-white/85 p-6 shadow-soft backdrop-blur sm:p-8">
+      <form ref={formRef} onSubmit={handleSubmit} className="rounded-[2rem] border border-outline-variant bg-surface-container-lowest p-6 shadow-soft sm:p-8">
         {/* Hidden fields to submit detected/chosen country and currency */}
         <input type="hidden" name="country_code" value={countryCode} />
         <input type="hidden" name="currency_code" value={currency} />
@@ -138,7 +138,7 @@ export function BusinessForm({ initialCountryCode }: BusinessFormProps) {
           </Select>
 
           {referralCode && (
-            <div className="flex items-center gap-2 rounded-xl bg-payroll/5 border border-payroll/20 px-4 py-2.5 text-sm text-payroll">
+            <div className="flex items-center gap-2 rounded-xl bg-primary-container border border-success-action/30 px-4 py-2.5 text-sm text-success-action">
               <span>🎉</span>
               <span>Referral code <strong>{referralCode}</strong> applied!</span>
             </div>

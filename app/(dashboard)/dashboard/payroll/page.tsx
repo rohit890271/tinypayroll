@@ -10,10 +10,10 @@ function fmtDate(iso: string) {
 
 function statusChip(status: string) {
   if (status === "processed")
-    return "inline-flex items-center rounded-full bg-emerald-900/60 border border-emerald-700/50 px-3 py-1 text-xs font-bold text-emerald-400";
+    return "inline-flex items-center rounded-full bg-primary-container border border-success-action/30 px-3 py-1 text-xs font-bold text-success-action";
   if (status === "draft")
-    return "inline-flex items-center rounded-full bg-amber-900/60 border border-amber-700/50 px-3 py-1 text-xs font-bold text-amber-400";
-  return "inline-flex items-center rounded-full bg-slate-800 border border-slate-600 px-3 py-1 text-xs font-bold text-slate-400";
+    return "inline-flex items-center rounded-full bg-tertiary-container border border-tertiary/30 px-3 py-1 text-xs font-bold text-tertiary";
+  return "inline-flex items-center rounded-full bg-surface-container border border-outline-variant px-3 py-1 text-xs font-bold text-on-surface-variant";
 }
 
 function statusLabel(status: string) {
@@ -38,7 +38,7 @@ export default async function PayrollPage() {
         </h1>
         <Link
           href="/dashboard/payroll/new"
-          className="inline-flex items-center justify-center gap-2 rounded-lg h-12 px-6 bg-success-action text-white text-base font-bold shadow-sm hover:opacity-90 transition-opacity"
+          className="inline-flex items-center justify-center gap-2 rounded-lg h-12 px-6 bg-success-action text-on-primary text-base font-bold shadow-sm hover:opacity-90 transition-opacity"
         >
           <span className="material-symbols-outlined text-[18px]">play_arrow</span>
           New Run
@@ -57,7 +57,7 @@ export default async function PayrollPage() {
             </div>
             <Link
               href="/dashboard/payroll/new"
-              className="mt-4 inline-flex items-center gap-2 rounded-lg bg-success-action px-6 py-3 text-sm font-bold text-white shadow-soft hover:opacity-90 transition"
+              className="mt-4 inline-flex items-center gap-2 rounded-lg bg-success-action px-6 py-3 text-sm font-bold text-on-primary shadow-soft hover:opacity-90 transition"
             >
               Run your first payroll
             </Link>

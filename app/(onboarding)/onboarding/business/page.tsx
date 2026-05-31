@@ -28,19 +28,19 @@ export default async function BusinessOnboardingPage({ searchParams }: BusinessO
     <main className="mx-auto grid min-h-screen max-w-5xl place-items-center px-6 py-10">
       <div className="grid w-full gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
         <section>
-          <Link href="/" className="text-sm font-black uppercase tracking-[0.3em] text-payroll">
+          <Link href="/" className="text-sm font-black uppercase tracking-[0.3em] text-success-action">
             TinyPayroll
           </Link>
-          <p className="mt-8 text-sm font-bold uppercase tracking-[0.25em] text-payroll">Step 1 of 2</p>
-          <h1 className="mt-4 text-5xl font-black tracking-tight text-ink">Tell us about the business.</h1>
-          <p className="mt-4 text-lg leading-8 text-moss">
+          <p className="mt-8 text-sm font-bold uppercase tracking-[0.25em] text-success-action">Step 1 of 2</p>
+          <h1 className="mt-4 text-5xl font-black tracking-tight text-on-surface">Tell us about the business.</h1>
+          <p className="mt-4 text-lg leading-8 text-on-surface-variant">
             This creates the workspace that anchors your employees, payroll runs, and dashboard access.
           </p>
         </section>
 
         <div className="w-full">
           {searchParams?.error ? (
-            <p className="mb-5 rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">
+            <p className="mb-5 rounded-2xl bg-error/10 border border-error/30 px-4 py-3 text-sm text-error">
               {searchParams.error}
             </p>
           ) : null}

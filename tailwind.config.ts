@@ -55,14 +55,6 @@ const config: Config = {
         "surface-variant": "var(--surface-variant)",
         "success-action": "var(--success-action)",
         accent: "var(--accent)",
-
-        // Legacy aliases
-        ink: "var(--on-surface)",
-        moss: "var(--on-surface-variant)",
-        cream: "var(--surface-container-low)",
-        oat: "var(--surface-container-high)",
-        payroll: "var(--success-action)",
-        white: "var(--surface-container-lowest)",
       },
       fontFamily: {
         sans: ["var(--font-inter)", "Inter", "ui-sans-serif", "system-ui"],

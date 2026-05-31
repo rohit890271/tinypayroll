@@ -40,13 +40,13 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
           <div
             key={t.id}
             role="alert"
-            className={`pointer-events-auto flex items-center gap-3 rounded-2xl border px-5 py-4 text-sm font-medium shadow-lg transition-all duration-300
+            className={`pointer-events-auto flex items-center gap-3 rounded-2xl border px-5 py-4 text-sm font-medium shadow-modal transition-all duration-300
               ${
                 t.type === "success"
-                  ? "bg-emerald-600 border-emerald-500 text-white"
+                  ? "bg-success-action border-success-action text-on-primary"
                   : t.type === "error"
-                  ? "bg-red-600 border-red-500 text-white"
-                  : "bg-ink border-ink/10 text-white"
+                  ? "bg-error border-error text-on-error"
+                  : "bg-inverse-surface border-outline-variant text-inverse-on-surface"
               }`}
           >
             {t.type === "success" ? (

@@ -3,7 +3,9 @@ import {
   getCurrentUserBusiness,
   getEmployeesForBusiness,
   getPayrollRuns,
+  getYtdPaidTotal,
 } from "@/lib/data/business";
+import { formatCurrency } from "@/lib/payroll/formatCurrency";
 
 function fmtDate(iso: string) {
   return new Date(iso + "T00:00:00").toLocaleDateString("en-US", {
@@ -13,10 +15,10 @@ function fmtDate(iso: string) {
 
 function statusChip(status: string) {
   if (status === "processed")
-    return "inline-flex items-center rounded-full bg-emerald-900/60 border border-emerald-700/50 px-3 py-1 text-xs font-bold text-emerald-400";
+    return "inline-flex items-center rounded-full bg-primary-container border border-success-action/30 px-3 py-1 text-xs font-bold text-success-action";
   if (status === "draft")
-    return "inline-flex items-center rounded-full bg-amber-900/60 border border-amber-700/50 px-3 py-1 text-xs font-bold text-amber-400";
-  return "inline-flex items-center rounded-full bg-slate-800 border border-slate-600 px-3 py-1 text-xs font-bold text-slate-400";
+    return "inline-flex items-center rounded-full bg-tertiary-container border border-tertiary/30 px-3 py-1 text-xs font-bold text-tertiary";
+  return "inline-flex items-center rounded-full bg-surface-container border border-outline-variant px-3 py-1 text-xs font-bold text-on-surface-variant";
 }
 
 function statusLabel(status: string) {
@@ -27,9 +29,10 @@ function statusLabel(status: string) {
 
 export default async function DashboardPage() {
   const { business } = await getCurrentUserBusiness();
-  const [employees, runs] = await Promise.all([
+  const [employees, runs, ytdTotal] = await Promise.all([
     business ? getEmployeesForBusiness(business.id) : Promise.resolve([]),
     business ? getPayrollRuns(business.id) : Promise.resolve([]),
+    business ? getYtdPaidTotal(business.id) : Promise.resolve(0),
   ]);
 
   const cc = (business as { country_code?: string } | null)?.country_code ?? "US";
@@ -44,7 +47,7 @@ export default async function DashboardPage() {
         </h1>
         <Link
           href="/dashboard/payroll/new"
-          className="inline-flex items-center justify-center gap-2 rounded-lg h-12 px-6 bg-success-action text-white text-base font-bold shadow-sm hover:opacity-90 transition-opacity"
+          className="inline-flex items-center justify-center gap-2 rounded-lg h-12 px-6 bg-success-action text-on-primary text-base font-bold shadow-sm hover:opacity-90 transition-opacity"
         >
           <span className="material-symbols-outlined text-[18px]">play_arrow</span>
           Run New Payroll
@@ -77,7 +80,7 @@ export default async function DashboardPage() {
             <p className="text-sm font-medium uppercase tracking-wider">Total Paid (YTD)</p>
           </div>
           <p className="font-headline text-3xl font-bold tabular-nums text-primary">
-            {runs.length > 0 ? `${runs.length} run${runs.length !== 1 ? "s" : ""}` : "—"}
+            {ytdTotal > 0 ? formatCurrency(ytdTotal, cc) : "—"}
           </p>
         </div>
       </div>
@@ -100,7 +103,7 @@ export default async function DashboardPage() {
             </div>
             <Link
               href="/dashboard/payroll/new"
-              className="inline-flex items-center gap-2 rounded-lg bg-success-action px-5 py-2.5 text-sm font-bold text-white hover:opacity-90 transition"
+              className="inline-flex items-center gap-2 rounded-lg bg-success-action px-5 py-2.5 text-sm font-bold text-on-primary hover:opacity-90 transition"
             >
               <span className="material-symbols-outlined text-[16px]">play_arrow</span>
               Run First Payroll

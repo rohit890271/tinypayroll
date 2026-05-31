@@ -16,7 +16,7 @@ export default async function EmployeesPage() {
         </h1>
         <Link
           href="/onboarding/employees"
-          className="inline-flex items-center justify-center gap-2 rounded-lg h-12 px-6 bg-success-action text-white text-base font-bold shadow-sm hover:opacity-90 transition-opacity"
+          className="inline-flex items-center justify-center gap-2 rounded-lg h-12 px-6 bg-success-action text-on-primary text-base font-bold shadow-sm hover:opacity-90 transition-opacity"
         >
           <span className="material-symbols-outlined text-[18px]">person_add</span>
           Add Employee
@@ -35,7 +35,7 @@ export default async function EmployeesPage() {
             </div>
             <Link
               href="/onboarding/employees"
-              className="mt-4 inline-flex items-center gap-2 rounded-lg bg-success-action px-6 py-3 text-sm font-bold text-white shadow-soft hover:opacity-90 transition"
+              className="mt-4 inline-flex items-center gap-2 rounded-lg bg-success-action px-6 py-3 text-sm font-bold text-on-primary shadow-soft hover:opacity-90 transition"
             >
               Add your first employee
             </Link>

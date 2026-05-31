@@ -76,14 +76,14 @@ export function CheckoutButton({
   return (
     <div className="w-full">
       {error && (
-        <div className="mb-4 rounded-xl bg-red-500/10 border border-red-500/20 p-3 text-xs text-red-400 text-center">
+        <div className="mb-4 rounded-xl bg-error/10 border border-error/30 p-3 text-xs text-error text-center">
           {error}
         </div>
       )}
       <button
         onClick={handleCheckout}
         disabled={loading}
-        className="w-full rounded-full bg-payroll py-4 text-center text-sm font-black text-white shadow-soft transition hover:bg-[#0b5d44] disabled:opacity-50"
+        className="w-full rounded-full bg-success-action py-4 text-center text-sm font-black text-on-primary shadow-soft transition hover:opacity-90 disabled:opacity-50"
       >
         {getButtonText()}
       </button>
