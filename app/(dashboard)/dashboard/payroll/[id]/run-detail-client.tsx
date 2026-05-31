@@ -19,9 +19,9 @@ export function RunDetailClient({ run, lineItems, business }: Props) {
   const cc = run.country_code;
 
   const totalGross = lineItems.reduce((sum, item) => sum + item.gross_pay, 0);
-  const totalDeductions = lineItems.reduce((sum, item) => sum + item.total_deductions, 0);
+  const totalDeductions = lineItems.reduce((sum, item) => sum + item.tax_withheld, 0);
   const totalNet = lineItems.reduce((sum, item) => sum + item.net_pay, 0);
-  const totalCost = lineItems.reduce((sum, item) => sum + item.employer_total_cost, 0);
+  const totalCost = lineItems.reduce((sum, item) => sum + item.employer_cost, 0);
 
   const fmtDate = (iso: string) =>
     new Date(iso + "T00:00:00").toLocaleDateString("en-US", {
@@ -47,9 +47,9 @@ export function RunDetailClient({ run, lineItems, business }: Props) {
       },
       calc: {
         gross_pay: item.gross_pay,
-        total_deductions: item.total_deductions,
+        total_deductions: item.tax_withheld,
         net_pay: item.net_pay,
-        employer_total_cost: item.employer_total_cost,
+        employer_total_cost: item.employer_cost,
         // Since we don't store individual deduction line items in the DB for this MVP,
         // we'll pass the total deductions as a single line item or reconstruct if needed.
         // Wait, the prompt says "payroll_line_items table has all calculated fields".
@@ -181,7 +181,7 @@ export function RunDetailClient({ run, lineItems, business }: Props) {
                     <p className="text-xs text-moss capitalize">{item.pay_type}</p>
                   </td>
                   <td className="px-6 py-4 text-right tabular-nums text-ink">{formatCurrency(item.gross_pay, cc)}</td>
-                  <td className="px-6 py-4 text-right tabular-nums text-red-500">-{formatCurrency(item.total_deductions, cc)}</td>
+                  <td className="px-6 py-4 text-right tabular-nums text-red-500">-{formatCurrency(item.tax_withheld, cc)}</td>
                   <td className="px-6 py-4 text-right tabular-nums font-semibold text-payroll">{formatCurrency(item.net_pay, cc)}</td>
                   <td className="px-6 py-4 text-right">
                     <button

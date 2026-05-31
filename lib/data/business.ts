@@ -93,9 +93,10 @@ export type PayrollLineItem = {
   unpaid_leave_days: number;
   bonus_amount: number;
   gross_pay: number;
-  total_deductions: number;
+  // DB columns: persisted by the payroll server action.
+  tax_withheld: number;
   net_pay: number;
-  employer_total_cost: number;
+  employer_cost: number;
   // joined employee name
   employee?: { name: string; email: string };
 };

@@ -2,8 +2,8 @@
 
 import { useState, useCallback, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
 import { calculateEmployeePayroll } from "@/lib/payroll/calculatePayroll";
+import { processPayrollRun } from "./actions";
 import { formatCurrency } from "@/lib/payroll/formatCurrency";
 import type { BusinessWithCountry, PayrollCalc, RowInputs, EnrichedEmployee } from "./types";
 import { EmployeeRow } from "./employee-row";
@@ -113,49 +113,32 @@ export function NewPayrollClient({
 
   async function handleConfirm() {
     setProcessing(true);
-    const supabase = createClient();
 
     try {
-      // Insert payroll_run
-      const { data: run, error: runErr } = await supabase
-        .from("payroll_runs")
-        .insert({
-          business_id: business.id,
-          pay_period_start: periodStart,
-          pay_period_end: periodEnd,
-          run_date: new Date().toISOString().split("T")[0],
-          status: "processed",
-          country_code: cc,
-          currency_code: business.currency_code,
-        })
-        .select("id")
-        .single();
-
-      if (runErr) throw runErr;
-
-      // Build line items — columns match live DB schema exactly
-      const lineItems = employees.map((emp) => {
-        const c = calcs[emp.id];
+      // Send only raw, non-monetary inputs. The server action recomputes all
+      // money figures from the authoritative employee records before persisting.
+      const rows = employees.map((emp) => {
         const inputs = rowInputs[emp.id];
         return {
-          payroll_run_id: run.id,
-          employee_id: emp.id,
-          hours_worked: emp.pay_type === "hourly" ? Number(inputs.hoursWorked) || 0 : 0,
-          overtime_hours: emp.pay_type === "hourly" ? Number(inputs.overtimeHours) || 0 : 0,
-          unpaid_leave_days: Number(inputs.unpaidLeaveDays) || 0,
-          bonus_amount: Number(inputs.bonusAmount) || 0,
-          gross_pay: c?.gross_pay ?? 0,
-          tax_withheld: c?.total_deductions ?? 0,
-          net_pay: c?.net_pay ?? 0,
-          employer_cost: c?.employer_total_cost ?? 0,
+          employeeId: emp.id,
+          hoursWorked: Number(inputs.hoursWorked) || 0,
+          overtimeHours: Number(inputs.overtimeHours) || 0,
+          unpaidLeaveDays: Number(inputs.unpaidLeaveDays) || 0,
+          bonusAmount: Number(inputs.bonusAmount) || 0,
         };
       });
 
-      const { error: lineErr } = await supabase
-        .from("payroll_line_items")
-        .insert(lineItems);
+      const result = await processPayrollRun({
+        businessId: business.id,
+        periodStart,
+        periodEnd,
+        rows,
+      });
 
-      if (lineErr) throw lineErr;
+      if (result.error) {
+        error(result.error);
+        return;
+      }
 
       success("Payroll processed successfully!");
       startTransition(() => router.push("/dashboard"));
