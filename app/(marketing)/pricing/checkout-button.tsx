@@ -47,6 +47,11 @@ export function CheckoutButton({
         },
       });
 
+      if (response.status === 409) {
+        // Already subscribed — redirect to dashboard immediately.
+        router.push("/dashboard");
+        return;
+      }
       if (!response.ok) {
         const data = await response.json();
         throw new Error(data.error || "Failed to initiate checkout");

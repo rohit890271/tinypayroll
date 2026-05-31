@@ -1,6 +1,6 @@
 # TinyPayroll 💸
 
-TinyPayroll is a premium, high-fidelity, multi-country payroll management SaaS designed to simplify employee onboarding, payroll run analytics, and salary distribution. Developed using AI-assisted pair programming ("vibe coding") and the custom Stitch design system spec, it features a stunning glassmorphic UI, robust calculation engines, and secure data persistence.
+TinyPayroll is a premium, high-fidelity, multi-country payroll management SaaS designed to simplify employee onboarding, payroll run analytics, and salary distribution. Developed using AI-assisted pair programming ("vibe coding"), it features a warm "tiny teams" design system (cream/sand surfaces in light, espresso in dark, forest-green brand), robust calculation engines, and secure data persistence.
 
 ---
 
@@ -24,7 +24,7 @@ TinyPayroll is armed with high-fidelity, country-compliant payroll calculation e
   - Determines total cost to employer (CTC breakdown) and Net Pay in INR.
 
 ### 3. Rich Dashboard & Analytics
-- Designed using the **Stitch Spec**—premium glassmorphism, tailored typography, custom moss/payroll green accents, and rich micro-animations.
+- Designed using a **warm "tiny teams" token system** — cream/sand surfaces (light) and espresso (dark), forest-green primary (`--primary`), emerald CTAs (`--success-action`), and a terracotta accent (`--accent`). Tailwind is token-driven via CSS variables; no raw palette classes.
 - **KPI Metrics**: Active Employees, Last Payroll Date, and Last Payroll Total Cost cards.
 - **History Table**: List of the last 10 payroll runs with dynamic status badges (Draft / Processed), total payouts, and detailed deep-dives.
 - **Floating Action Button (FAB)**: Smooth floating button to instantly spawn a new payroll run.

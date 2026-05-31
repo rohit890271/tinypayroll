@@ -18,12 +18,23 @@ export async function POST(req: Request) {
     // Fetch business
     const { data: business, error: bizError } = await supabase
       .from("businesses")
-      .select("id, name, dodo_customer_id")
+      .select("id, name, dodo_customer_id, subscription_status")
       .eq("owner_user_id", user.id)
       .single();
 
     if (bizError || !business) {
       return NextResponse.json({ error: "Business not found" }, { status: 404 });
+    }
+
+    // Guard: don't create a new checkout for an already-active or trialing subscription.
+    if (
+      business.subscription_status === "active" ||
+      business.subscription_status === "trialing"
+    ) {
+      return NextResponse.json(
+        { error: "Subscription already active", redirect: "/dashboard" },
+        { status: 409 }
+      );
     }
 
     const dodo = getDodoClient();

@@ -27,5 +27,5 @@ When a user asks to "Run phase X":
 
 ## 4. UI/UX Aesthetics
 - Use rich aesthetics, modern typography, glassmorphism, and clean spacing.
-- Stick to the existing color palette defined in `globals.css` (e.g., `text-payroll`, `text-ink`, `bg-cream`, `text-moss`).
+- Use only the semantic token classes defined in `tailwind.config.ts` and `globals.css` (e.g., `text-on-surface`, `bg-surface-container-low`, `text-success-action`, `bg-primary-container`). Legacy aliases (`ink`, `moss`, `cream`, `payroll`, `oat`) have been removed — do NOT use them. Raw Tailwind palette colors (`emerald-*`, `slate-*`, `amber-*`) must not be used for app UI; always reach for a semantic token instead.
 - Provide loading states for buttons and interactive elements.
