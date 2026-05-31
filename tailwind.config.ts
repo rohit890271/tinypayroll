@@ -54,7 +54,8 @@ const config: Config = {
         "on-background": "var(--on-background)",
         "surface-variant": "var(--surface-variant)",
         "success-action": "var(--success-action)",
-        
+        accent: "var(--accent)",
+
         // Legacy aliases
         ink: "var(--on-surface)",
         moss: "var(--on-surface-variant)",

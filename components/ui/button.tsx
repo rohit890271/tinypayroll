@@ -1,9 +1,9 @@
 import type { ButtonHTMLAttributes } from "react";
 
 const variantClasses = {
-  primary: "bg-payroll text-white shadow-soft hover:bg-[#0b5d44] disabled:bg-payroll/50",
-  secondary: "border border-ink/15 bg-white text-ink hover:bg-cream disabled:bg-white/50",
-  ghost: "text-moss hover:bg-oat/70 disabled:opacity-50"
+  primary: "bg-success-action text-on-primary shadow-soft hover:opacity-90 disabled:opacity-50",
+  secondary: "border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container disabled:opacity-50",
+  ghost: "text-on-surface-variant hover:bg-surface-container disabled:opacity-50"
 };
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {

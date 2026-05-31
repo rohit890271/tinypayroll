@@ -47,12 +47,12 @@ export function AuthForm({ action, error: initialError, mode }: AuthFormProps) {
 
   return (
     <div className="mx-auto grid min-h-screen max-w-md place-items-center px-6 py-12">
-      <div className="w-full rounded-[2rem] border border-ink/10 bg-white/85 p-8 shadow-soft backdrop-blur">
-        <Link href="/" className="text-sm font-bold uppercase tracking-[0.25em] text-payroll">
+      <div className="w-full rounded-[2rem] border border-outline-variant bg-surface-container-lowest p-8 shadow-soft">
+        <Link href="/" className="text-sm font-bold uppercase tracking-[0.25em] text-success-action">
           TinyPayroll
         </Link>
-        <h1 className="mt-8 text-3xl font-black tracking-tight text-ink">{isLogin ? "Welcome back" : "Create your account"}</h1>
-        <p className="mt-3 text-sm leading-6 text-moss">
+        <h1 className="mt-8 text-3xl font-black tracking-tight text-on-surface">{isLogin ? "Welcome back" : "Create your account"}</h1>
+        <p className="mt-3 text-sm leading-6 text-on-surface-variant">
           {isLogin ? "Sign in to keep payroll setup moving." : "Start with your email and password. The guided setup comes next."}
         </p>
 
@@ -62,9 +62,9 @@ export function AuthForm({ action, error: initialError, mode }: AuthFormProps) {
           <Button type="submit" loading={isPending}>{isLogin ? "Log in" : "Sign up"}</Button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-moss">
+        <p className="mt-6 text-center text-sm text-on-surface-variant">
           {isLogin ? "New here?" : "Already have an account?"} {" "}
-          <Link href={isLogin ? "/signup" : "/login"} className="font-semibold text-payroll hover:underline">
+          <Link href={isLogin ? "/signup" : "/login"} className="font-semibold text-success-action hover:underline">
             {isLogin ? "Create an account" : "Log in"}
           </Link>
         </p>
